@@ -16,6 +16,7 @@ import QuartzCore
 open class HFCardCollectionViewCell: UICollectionViewCell {
     
     @IBInspectable open var cornerRadius: CGFloat = 10
+    @IBInspectable open var isShadowDroppingEnabled: Bool = true
     
     private var firstBackgroundColor: UIColor?
     
@@ -63,8 +64,10 @@ open class HFCardCollectionViewCell: UICollectionViewCell {
     /// Overwritten to update the shadowPath.
     override open var bounds: CGRect {
         didSet {
-            let shadowPath = UIBezierPath(roundedRect: self.bounds, cornerRadius: self.cornerRadius).cgPath
-            self.layer.shadowPath = shadowPath
+            if isShadowDroppingEnabled {
+                let shadowPath = UIBezierPath(roundedRect: self.bounds, cornerRadius: self.cornerRadius).cgPath
+                self.layer.shadowPath = shadowPath
+            }
         }
     }
     
@@ -84,14 +87,17 @@ open class HFCardCollectionViewCell: UICollectionViewCell {
     // MARK: Private Functions
     
     private func setupLayer(_ forView: UIView) {
-        // Shadow can have performance issues on older devices
-        let shadowPath = UIBezierPath(roundedRect: self.bounds, cornerRadius: self.cornerRadius).cgPath
-        forView.layer.shadowPath = shadowPath
+        if isShadowDroppingEnabled {
+            // Shadow can have performance issues on older devices
+            let shadowPath = UIBezierPath(roundedRect: self.bounds, cornerRadius: self.cornerRadius).cgPath
+            forView.layer.shadowPath = shadowPath
+            forView.layer.shadowColor = UIColor(white: 0.0, alpha: 1.0).cgColor
+            forView.layer.shadowRadius = 2
+            forView.layer.shadowOpacity = 0.35
+            forView.layer.shadowOffset = CGSize(width: 0, height: 0)
+        }
+        
         forView.layer.masksToBounds = false
-        forView.layer.shadowColor = UIColor(white: 0.0, alpha: 1.0).cgColor
-        forView.layer.shadowRadius = 2
-        forView.layer.shadowOpacity = 0.35
-        forView.layer.shadowOffset = CGSize(width: 0, height: 0)
         forView.layer.rasterizationScale = UIScreen.main.scale
         forView.layer.shouldRasterize = true
         forView.clipsToBounds = false
