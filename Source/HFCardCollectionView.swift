@@ -36,7 +36,7 @@ class HFCardCollectionView: UICollectionView {
             // and install a custom reorder gesture recognizer.
             if gestureClassName == "UILongPressGestureRecognizer" &&
                 gestureString.range(of: "action=_handleReorderingGesture") != nil {
-                collectionViewLayout.installMoveCardsGestureRecognizer()
+                collectionViewLayout.installMvCardsGestureRecognizer()
                 return
             }
         }
