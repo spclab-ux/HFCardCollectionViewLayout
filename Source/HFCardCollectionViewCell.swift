@@ -14,25 +14,24 @@ import QuartzCore
 /// This Cell has no dependency on the HFCardCollectionViewLayout.
 /// So you can create your own UICollectionViewCell without extending from this class.
 open class HFCardCollectionViewCell: UICollectionViewCell {
-    
+
     @IBInspectable open var cornerRadius: CGFloat = 10
-    
+
     private var firstBackgroundColor: UIColor?
-    
+
     // MARK: Overrides
-    
     /// Overwritten to setup the view
     open override func awakeFromNib() {
         super.awakeFromNib()
-        
+
         self.setupLayer(self)
-        
+
         self.contentView.layer.masksToBounds = true
         self.contentView.layer.cornerRadius = self.cornerRadius
         self.contentView.clipsToBounds = true
         self.contentView.backgroundColor = self.firstBackgroundColor
     }
-    
+
     /// Important for updating the Z index and setting the flag 'isUserInteractionEnabled'
     ///
     /// - Parameter layoutAttributes: The new layout attributes
@@ -45,11 +44,11 @@ open class HFCardCollectionViewCell: UICollectionViewCell {
             self.contentView.isUserInteractionEnabled = true
         }
     }
-    
+
     /// Overwritten to pass the backgroundColor to contentView and keep the cell itself transparent.
     override open var backgroundColor: UIColor? {
         set {
-            if(self.firstBackgroundColor == nil) {
+            if self.firstBackgroundColor == nil {
                 self.firstBackgroundColor = newValue
             }
             super.backgroundColor = .clear
@@ -59,7 +58,7 @@ open class HFCardCollectionViewCell: UICollectionViewCell {
             return self.contentView.backgroundColor
         }
     }
-    
+
     /// Overwritten to update the shadowPath.
     override open var bounds: CGRect {
         didSet {
@@ -67,7 +66,7 @@ open class HFCardCollectionViewCell: UICollectionViewCell {
             self.layer.shadowPath = shadowPath
         }
     }
-    
+
     /// Overwritten to create a better snapshot.
     ///
     /// The HFCardCollectionViewLayout will create a snapshot of this cell as the moving card view.
@@ -80,9 +79,9 @@ open class HFCardCollectionViewCell: UICollectionViewCell {
         self.setupLayer(snapshotView)
         return snapshotView
     }
-    
+
     // MARK: Private Functions
-    
+
     private func setupLayer(_ forView: UIView) {
         // Shadow can have performance issues on older devices
         let shadowPath = UIBezierPath(roundedRect: self.bounds, cornerRadius: self.cornerRadius).cgPath
@@ -96,5 +95,4 @@ open class HFCardCollectionViewCell: UICollectionViewCell {
         forView.layer.shouldRasterize = true
         forView.clipsToBounds = false
     }
-    
 }

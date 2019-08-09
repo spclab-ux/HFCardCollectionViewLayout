@@ -26,18 +26,17 @@ struct CardLayoutSetupOptions {
     var scrollAreaBottom: CGFloat = 120
     var scrollShouldSnapCardHead: Bool = false
     var scrollStopCardsAtTop: Bool = true
-    
     var numberOfCards: Int = 15
 }
 
 class MenuTableViewController: UITableViewController {
-    
+
     var hideNavigationBar = false
     var hideToolBar = false
-    
+
     var defaults = CardLayoutSetupOptions()
     var numberFormatter = NumberFormatter()
-    
+
     @IBOutlet var textfieldNumberOfCards: UITextField?
     @IBOutlet var textfieldFirstMovableIndex: UITextField?
     @IBOutlet var textfieldCardHeadHeight: UITextField?
@@ -56,27 +55,27 @@ class MenuTableViewController: UITableViewController {
     @IBOutlet var textfieldScrollAreaBottom: UITextField?
     @IBOutlet var switchScrollShouldSnapCardHead: UISwitch?
     @IBOutlet var switchScrollStopCardsAtTop: UISwitch?
-    
+
     override func viewDidLoad() {
         self.numberFormatter.locale = Locale(identifier: "en_US")
         super.viewDidLoad()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.isNavigationBarHidden = false
         self.navigationController?.isToolbarHidden = true
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         UIApplication.shared.keyWindow?.endEditing(true)
         self.navigationController?.isNavigationBarHidden = self.hideNavigationBar
         self.navigationController?.isToolbarHidden = self.hideToolBar
     }
-    
+
     // MARK: Actions
-    
+
     @IBAction func resetAction() {
         self.textfieldNumberOfCards?.text                   = String(self.defaults.numberOfCards)
         self.textfieldFirstMovableIndex?.text               = String(self.defaults.firstMovableIndex)
@@ -86,24 +85,28 @@ class MenuTableViewController: UITableViewController {
         self.textfieldCardMaximumHeight?.text               = self.stringFromFloat(self.defaults.cardMaximumHeight)
         self.textfieldBottomNumberOfStackedCards?.text      = String(self.defaults.bottomNumberOfStackedCards)
         self.switchBottomStackedCardsShouldScale?.isOn      = self.defaults.bottomStackedCardsShouldScale
-        self.textfieldBottomCardLookoutMargin?.text         = self.stringFromFloat(self.defaults.bottomCardLookoutMargin)
-        self.textfieldSpaceAtTopForBackgroundView?.text     = self.stringFromFloat(self.defaults.spaceAtTopForBackgroundView)
+        self.textfieldBottomCardLookoutMargin?.text         =
+            self.stringFromFloat(self.defaults.bottomCardLookoutMargin)
+        self.textfieldSpaceAtTopForBackgroundView?.text     =
+            self.stringFromFloat(self.defaults.spaceAtTopForBackgroundView)
         self.switchSpaceAtTopShouldSnap?.isOn               = self.defaults.spaceAtTopShouldSnap
         self.textfieldSpaceAtBottom?.text                   = self.stringFromFloat(self.defaults.spaceAtBottom)
         self.textfieldScrollAreaTop?.text                   = self.stringFromFloat(self.defaults.scrollAreaTop)
         self.textfieldScrollAreaBottom?.text                = self.stringFromFloat(self.defaults.scrollAreaBottom)
         self.switchScrollShouldSnapCardHead?.isOn           = self.defaults.scrollShouldSnapCardHead
         self.switchScrollStopCardsAtTop?.isOn               = self.defaults.scrollStopCardsAtTop
-        self.textfieldBottomStackedCardsMinimumScale?.text  = self.stringFromFloat(self.defaults.bottomStackedCardsMinimumScale)
-        self.textfieldBottomStackedCardsMaximumScale?.text  = self.stringFromFloat(self.defaults.bottomStackedCardsMaximumScale)
+        self.textfieldBottomStackedCardsMinimumScale?.text  =
+            self.stringFromFloat(self.defaults.bottomStackedCardsMinimumScale)
+        self.textfieldBottomStackedCardsMaximumScale?.text  =
+            self.stringFromFloat(self.defaults.bottomStackedCardsMaximumScale)
     }
-    
+
     // MARK: Navigation
-    
+
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let controller = segue.destination as? ExampleViewController {
-            
+
             var layoutOptions = CardLayoutSetupOptions()
             layoutOptions.numberOfCards                  = self.getIntFromTextfield(self.textfieldNumberOfCards!)
             layoutOptions.firstMovableIndex              = self.getIntFromTextfield(self.textfieldFirstMovableIndex!)
@@ -111,55 +114,59 @@ class MenuTableViewController: UITableViewController {
             layoutOptions.cardShouldExpandHeadHeight     = self.switchCardShouldExpandHeadHeight!.isOn
             layoutOptions.cardShouldStretchAtScrollTop   = self.switchCardShouldStretchAtScrollTop!.isOn
             layoutOptions.cardMaximumHeight              = self.getFloatFromTextfield(self.textfieldCardMaximumHeight!)
-            layoutOptions.bottomNumberOfStackedCards     = self.getIntFromTextfield(self.textfieldBottomNumberOfStackedCards!)
+            layoutOptions.bottomNumberOfStackedCards     =
+                self.getIntFromTextfield(self.textfieldBottomNumberOfStackedCards!)
             layoutOptions.bottomStackedCardsShouldScale  = self.switchBottomStackedCardsShouldScale!.isOn
-            layoutOptions.bottomCardLookoutMargin        = self.getFloatFromTextfield(self.textfieldBottomCardLookoutMargin!)
-            layoutOptions.spaceAtTopForBackgroundView    = self.getFloatFromTextfield(self.textfieldSpaceAtTopForBackgroundView!)
+            layoutOptions.bottomCardLookoutMargin        =
+                self.getFloatFromTextfield(self.textfieldBottomCardLookoutMargin!)
+            layoutOptions.spaceAtTopForBackgroundView    =
+                self.getFloatFromTextfield(self.textfieldSpaceAtTopForBackgroundView!)
             layoutOptions.spaceAtTopShouldSnap           = self.switchSpaceAtTopShouldSnap!.isOn
             layoutOptions.spaceAtBottom                  = self.getFloatFromTextfield(self.textfieldSpaceAtBottom!)
             layoutOptions.scrollAreaTop                  = self.getFloatFromTextfield(self.textfieldScrollAreaTop!)
             layoutOptions.scrollAreaBottom               = self.getFloatFromTextfield(self.textfieldScrollAreaBottom!)
             layoutOptions.scrollShouldSnapCardHead       = self.switchScrollShouldSnapCardHead!.isOn
             layoutOptions.scrollStopCardsAtTop           = self.switchScrollStopCardsAtTop!.isOn
-            layoutOptions.bottomStackedCardsMinimumScale = self.getFloatFromTextfield(self.textfieldBottomStackedCardsMinimumScale!)
-            layoutOptions.bottomStackedCardsMaximumScale = self.getFloatFromTextfield(self.textfieldBottomStackedCardsMaximumScale!)
-            
+            layoutOptions.bottomStackedCardsMinimumScale =
+                self.getFloatFromTextfield(self.textfieldBottomStackedCardsMinimumScale!)
+            layoutOptions.bottomStackedCardsMaximumScale =
+                self.getFloatFromTextfield(self.textfieldBottomStackedCardsMaximumScale!)
+
             controller.cardLayoutOptions = layoutOptions
-            
-            if(segue.identifier == "AsRootController") {
+
+            if segue.identifier == "AsRootController" {
                 self.hideNavigationBar = true
                 self.hideToolBar = true
                 controller.shouldSetupBackgroundView = true
             }
-            if(segue.identifier == "WithinNavigationController") {
+            if segue.identifier == "WithinNavigationController" {
                 self.hideNavigationBar = false
                 self.hideToolBar = true
             }
-            if(segue.identifier == "WithNavigationAndToolbar") {
+            if segue.identifier == "WithNavigationAndToolbar" {
                 self.hideNavigationBar = false
                 self.hideToolBar = false
             }
         }
     }
-    
+
     // MARK: Private functions
-    
+
     private func getIntFromTextfield(_ textfield: UITextField) -> Int {
-        if let n = self.numberFormatter.number(from: (textfield.text)!) {
-            return n.intValue
+        if let formattedNumber = self.numberFormatter.number(from: (textfield.text)!) {
+            return formattedNumber.intValue
         }
         return 0
     }
-    
+
     private func getFloatFromTextfield(_ textfield: UITextField) -> CGFloat {
-        if let n = self.numberFormatter.number(from: (textfield.text)!) {
-            return CGFloat(truncating: n)
+        if let formattedNumber = self.numberFormatter.number(from: (textfield.text)!) {
+            return CGFloat(truncating: formattedNumber)
         }
         return 0
     }
-    
+
     private func stringFromFloat(_ float: CGFloat) -> String {
         return String(Int(float))
     }
-    
 }
