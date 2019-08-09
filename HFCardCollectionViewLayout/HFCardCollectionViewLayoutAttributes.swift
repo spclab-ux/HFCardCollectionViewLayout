@@ -8,6 +8,7 @@
 
 import UIKit
 /// Layout attributes for the HFCardCollectionViewLayout
+/// Moved
 open class HFCardCollectionViewLayoutAttributes: UICollectionViewLayoutAttributes {
 
     /// Specifies if the CardCell is revealed.
