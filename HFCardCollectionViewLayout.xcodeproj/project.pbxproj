@@ -11,6 +11,8 @@
 		416D2D711E5F117500D8A570 /* HFCardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 416D2D6D1E5F117500D8A570 /* HFCardCollectionViewCell.swift */; };
 		416D2D721E5F117500D8A570 /* HFCardCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 416D2D6E1E5F117500D8A570 /* HFCardCollectionViewLayout.swift */; };
 		416D2D731E5F117500D8A570 /* HFCardCollectionViewLayoutDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 416D2D6F1E5F117500D8A570 /* HFCardCollectionViewLayoutDelegate.swift */; };
+		56E222B222FE1C8C002D7B97 /* HFCardCollectionViewLayoutModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E222B122FE1C8C002D7B97 /* HFCardCollectionViewLayoutModel.swift */; };
+		56E222B422FE26D1002D7B97 /* HFCardCollectionViewLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E222B322FE26D1002D7B97 /* HFCardCollectionViewLayoutAttributes.swift */; };
 		5BD2E5FDCB2A7EAEC2CED915 /* Pods_HFCardCollectionViewLayout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC23847657BE130910BFE14 /* Pods_HFCardCollectionViewLayout.framework */; };
 /* End PBXBuildFile section */
 
@@ -22,6 +24,8 @@
 		416D2D6D1E5F117500D8A570 /* HFCardCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HFCardCollectionViewCell.swift; path = Source/HFCardCollectionViewCell.swift; sourceTree = SOURCE_ROOT; };
 		416D2D6E1E5F117500D8A570 /* HFCardCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HFCardCollectionViewLayout.swift; path = Source/HFCardCollectionViewLayout.swift; sourceTree = SOURCE_ROOT; };
 		416D2D6F1E5F117500D8A570 /* HFCardCollectionViewLayoutDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HFCardCollectionViewLayoutDelegate.swift; path = Source/HFCardCollectionViewLayoutDelegate.swift; sourceTree = SOURCE_ROOT; };
+		56E222B122FE1C8C002D7B97 /* HFCardCollectionViewLayoutModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HFCardCollectionViewLayoutModel.swift; path = Source/HFCardCollectionViewLayoutModel.swift; sourceTree = SOURCE_ROOT; };
+		56E222B322FE26D1002D7B97 /* HFCardCollectionViewLayoutAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HFCardCollectionViewLayoutAttributes.swift; sourceTree = "<group>"; };
 		5BC23847657BE130910BFE14 /* Pods_HFCardCollectionViewLayout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HFCardCollectionViewLayout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		98684D70501442E03732ECB7 /* Pods-HFCardCollectionViewLayout.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HFCardCollectionViewLayout.debug.xcconfig"; path = "Target Support Files/Pods-HFCardCollectionViewLayout/Pods-HFCardCollectionViewLayout.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -60,10 +64,12 @@
 			isa = PBXGroup;
 			children = (
 				416D2D6D1E5F117500D8A570 /* HFCardCollectionViewCell.swift */,
+				56E222B322FE26D1002D7B97 /* HFCardCollectionViewLayoutAttributes.swift */,
 				416D2D6E1E5F117500D8A570 /* HFCardCollectionViewLayout.swift */,
 				416D2D6F1E5F117500D8A570 /* HFCardCollectionViewLayoutDelegate.swift */,
 				416D2D651E5F113600D8A570 /* HFCardCollectionViewLayout.h */,
 				416D2D661E5F113600D8A570 /* Info.plist */,
+				56E222B122FE1C8C002D7B97 /* HFCardCollectionViewLayoutModel.swift */,
 			);
 			path = HFCardCollectionViewLayout;
 			sourceTree = "<group>";
@@ -211,6 +217,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				56E222B222FE1C8C002D7B97 /* HFCardCollectionViewLayoutModel.swift in Sources */,
+				56E222B422FE26D1002D7B97 /* HFCardCollectionViewLayoutAttributes.swift in Sources */,
 				416D2D721E5F117500D8A570 /* HFCardCollectionViewLayout.swift in Sources */,
 				416D2D711E5F117500D8A570 /* HFCardCollectionViewCell.swift in Sources */,
 				416D2D731E5F117500D8A570 /* HFCardCollectionViewLayoutDelegate.swift in Sources */,
