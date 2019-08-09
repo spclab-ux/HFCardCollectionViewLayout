@@ -58,10 +58,10 @@ class ExampleViewController: UICollectionViewController, HFCardCollectionViewLay
 
     override func collectionView(_ collectionView: UICollectionView,
                                  cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CardCell",
-                                                                for: indexPath) as? ExampleCollectionViewCell else {
-                                                                    return
-        }
+        
+        
+        let cell = (collectionView.dequeueReusableCell(withReuseIdentifier: "CardCell",
+                                                                for: indexPath) as? ExampleCollectionViewCell)!
         cell.backgroundColor = self.cardArray[indexPath.item].color
         cell.imageIcon?.image = self.cardArray[indexPath.item].icon
         return cell
