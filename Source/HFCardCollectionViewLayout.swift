@@ -1013,7 +1013,7 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
     /// - Parameter gestureRecognizer: The gesture recognizer.
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         if(gestureRecognizer == self.movingCardGestureRecognizer || gestureRecognizer == self.collectionViewTapGestureRecognizer) {
-            if(self.revealedIndex >= 0) {
+            if self.revealedIndex >= 0 {
                 return false
             }
         }
