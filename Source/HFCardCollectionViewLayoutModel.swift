@@ -9,37 +9,33 @@
 import UIKit
 
 open class HFCardCollectionViewLayoutModel: NSObject {
-     var collectionViewIsInitialized = false
-     var collectionViewItemCount: Int = 0
-     var collectionViewTapGestureRecognizer: UITapGestureRecognizer?
-     var collectionViewIgnoreBtCtOffsetChanges: Bool = false
-     var collectionViewLastBottomContentOffset: CGFloat = 0
-     var collectionViewForceUnreveal: Bool = false
-     var collectionViewDeletedIndexPaths = [IndexPath]()
-     var collectionViewTemporaryTop: CGFloat = 0
-
-     var cardCollectionBoundsSize: CGSize = .zero
-     var cardCollectionViewLayoutAttributes: [HFCardCollectionViewLayoutAttributes]!
-     var cardCollectionBottomCardsSet: [Int] = []
-     var cardCollectionBottomCardsRevealedIndex: CGFloat = 0
-     var cardCollectionCellSize: CGSize = .zero
-
-     var revealedCardCell: UICollectionViewCell?
-     var rvldCardPanGestRecognizer: UIPanGestureRecognizer?
-     var rvldCardPanGestureTouchLocationY: CGFloat = 0
-     var rvldCardFlipView: UIView?
-     var rvldCardIsFlipped: Bool = false
-
-     var mvngCardSelectedIndex: Int = -1
-     var mvngCardGestureRecognizer: UILongPressGestureRecognizer?
-     var mvngCardActive: Bool = false
-     var mvngCardGestureStartLocation: CGPoint = .zero
-     var mvngCardGestureCurrentLocation: CGPoint = .zero
-     var mvngCardCenterStart: CGPoint = .zero
-     var mvngCardSnapshotCell: UIView?
-     var mvngCardLastTouchedLocation: CGPoint = .zero
-     var mvngCardLastTouchedIndexPath: IndexPath?
-     var mvngCardStartIndexPath: IndexPath?
-
-     var autoscrollDisplayLink: CADisplayLink?
+    private var cvIsInitialized = false
+    private var cvItemCount: Int = 0
+    private var cvTapGestureRecognizer: UITapGestureRecognizer?
+    private var cvIgnoreBottomContentOffsetChanges: Bool = false
+    private var cvLastBottomContentOffset: CGFloat = 0
+    private var cvForceUnreveal: Bool = false
+    private var cvDeletedIndexPaths = [IndexPath]()
+    private var cvTemporaryTop: CGFloat = 0
+    private var cdCollBoundsSize: CGSize = .zero
+    private var cdCollViewLayoutAttributes: [HFCardCollectionViewLayoutAttributes]!
+    private var cdCollBottomCardsSet: [Int] = []
+    private var cdCollBottomCardsRevealedIndex: CGFloat = 0
+    private var cdCollCellSize: CGSize = .zero
+    private var rvldCdCell: UICollectionViewCell?
+    private var rvldCdPanGestureRecognizer: UIPanGestureRecognizer?
+    private var rvldCdPanGestureTouchLocationY: CGFloat = 0
+    private var rvldCdFlipView: UIView?
+    private var rvldCdIsFlipped: Bool = false
+    private var mvCdSelectedIndex: Int = -1
+    private var mvCdGestureRecognizer: UILongPressGestureRecognizer?
+    private var mvCdActive: Bool = false
+    private var mvCdGestureStartLocation: CGPoint = .zero
+    private var mvCdGestureCurrentLocation: CGPoint = .zero
+    private var mvCdCenterStart: CGPoint = .zero
+    private var mvCdSnapshotCell: UIView?
+    private var mvCdLastTouchedLocation: CGPoint = .zero
+    private var mvCdLastTouchedIndexPath: IndexPath?
+    private var mvCdStartIndexPath: IndexPath?
+    var autoscrollDisplayLink: CADisplayLink?
 }
