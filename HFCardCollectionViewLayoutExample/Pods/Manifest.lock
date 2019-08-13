@@ -10,7 +10,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   HFCardCollectionViewLayout:
-    :commit: 1d264b849faccf5f6dc28502c92fd306ef0b0b61
+    :commit: 7d43b202885d6961072d7977ce7925b76b608c69
     :git: https://github.com/spclab-ux/HFCardCollectionViewLayout.git
 
 SPEC CHECKSUMS:
