@@ -10,6 +10,46 @@
 
 import UIKit
 
+enum HFCardCollectionScrollDirection: Int {
+    case unknown = 0
+    case upwards
+    case down
+}
+
+open class HFCardCollectionViewModel: NSObject {
+    var cvIsInitialized = false
+    var cvItemCount: Int = 0
+    var cvTapGestureRecognizer: UITapGestureRecognizer?
+    var cvIgnoreBottomContentOffsetChanges: Bool = false
+    var cvLastBottomContentOffset: CGFloat = 0
+    var cvForceUnreveal: Bool = false
+    var cvDeletedIndexPaths = [IndexPath]()
+    var cvTemporaryTop: CGFloat = 0
+    var cdCollBoundsSize: CGSize = .zero
+    var cdCollViewLayoutAttributes: [HFCardCollectionViewLayoutAttributes]!
+    var cdCollBottomCardsSet: [Int] = []
+    var cdCollBottomCardsRevealedIndex: CGFloat = 0
+    var cdCollCellSize: CGSize = .zero
+    var rvldCdCell: UICollectionViewCell?
+    var rvldCdPanGestureRecognizer: UIPanGestureRecognizer?
+    var rvldCdPanGestureTouchLocationY: CGFloat = 0
+    var rvldCdFlipView: UIView?
+    var rvldCdIsFlipped: Bool = false
+    var mvCdSelectedIndex: Int = -1
+    var mvCdGestureRecognizer: UILongPressGestureRecognizer?
+    var mvCdActive: Bool = false
+    var mvCdGestureStartLocation: CGPoint = .zero
+    var mvCdGestureCurrentLocation: CGPoint = .zero
+    var mvCdCenterStart: CGPoint = .zero
+    var mvCdSnapshotCell: UIView?
+    var mvCdLastTouchedLocation: CGPoint = .zero
+    var mvCdLastTouchedIndexPath: IndexPath?
+    var mvCdStartIndexPath: IndexPath?
+    var autoscrollDisplayLink: CADisplayLink?
+    var autoscrollDirection: HFCardCollectionScrollDirection = .unknown
+}
+
+
 /// The HFCardCollectionViewLayout provides a card stack layout not quite similar like the apps Reminder and Wallet.
 open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecognizerDelegate {
     // MARK: Public Variables
@@ -244,18 +284,18 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
             return
         }
         if ((self.revealedIndex >= 0 && self.revealedIndex == index) ||
-            (self.revealedIndex >= 0 && index < 0)) && self.rvldCdIsFlipped == true {
+            (self.revealedIndex >= 0 && index < 0)) && self.attributes.rvldCdIsFlipped == true {
             // do nothing, because the card is flipped
         } else if self.revealedIndex >= 0 && index >= 0 {
-            if self.cvForceUnreveal == false {
+            if self.attributes.cvForceUnreveal == false {
                 if collectionViewLayoutDelegate?.cardCollectionViewLayout?(self,
                                                                            canUnrevealCardAtIndex:
                     self.revealedIndex) == false {
                     return
                 }
             }
-            self.cvForceUnreveal = false
-            if self.rvldCdIsFlipped == true {
+            self.attributes.cvForceUnreveal = false
+            if self.attributes.rvldCdIsFlipped == true {
                 self.flipRevealedCardBack(completion: {
                     self.collectionView?.isScrollEnabled = true
                     self.deinitializeRevealedCard()
@@ -321,13 +361,13 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
     open func unrevealCard(completion: (() -> Void)? = nil) {
         if self.revealedIndex == -1 {
             completion?()
-        } else if self.rvldCdIsFlipped == true {
+        } else if self.attributes.rvldCdIsFlipped == true {
             self.flipRevealedCardBack(completion: {
-                self.cvForceUnreveal = true
+                self.attributes.cvForceUnreveal = true
                 self.revealCardAt(index: self.revealedIndex, completion: completion)
             })
         } else {
-            self.cvForceUnreveal = true
+            self.attributes.cvForceUnreveal = true
             self.revealCardAt(index: self.revealedIndex, completion: completion)
         }
     }
@@ -337,16 +377,16 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
     /// - Parameter toView: The view for the backview of te card.
     /// - Parameter completion: An optional completion block. Will be executed the animation is finished.
     open func flipRevealedCard(toView: UIView, completion: (() -> Void)? = nil) {
-        if self.rvldCdIsFlipped == true {
+        if self.attributes.rvldCdIsFlipped == true {
             return
         }
-        if let cardCell = self.rvldCdCell, self.revealedIndex >= 0 {
+        if let cardCell = self.attributes.rvldCdCell, self.revealedIndex >= 0 {
             toView.removeFromSuperview()
-            self.rvldCdFlipView = toView
+            self.attributes.rvldCdFlipView = toView
             toView.frame = CGRect(x: 0, y: 0, width: cardCell.frame.width, height: cardCell.frame.height)
             toView.isHidden = true
             cardCell.addSubview(toView)
-            self.rvldCdIsFlipped = true
+            self.attributes.rvldCdIsFlipped = true
             UIApplication.shared.keyWindow?.endEditing(true)
             let originalShouldRasterize = cardCell.layer.shouldRasterize
             cardCell.layer.shouldRasterize = false
@@ -364,12 +404,12 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
     ///
     /// - Parameter completion: An optional completion block. Will be executed the animation is finished.
     open func flipRevealedCardBack(completion: (() -> Void)? = nil) {
-        if self.rvldCdIsFlipped == false {
+        if self.attributes.rvldCdIsFlipped == false {
             completion?()
             return
         }
-        if let cardCell = self.rvldCdCell {
-            if let flipView = self.rvldCdFlipView {
+        if let cardCell = self.attributes.rvldCdCell {
+            if let flipView = self.attributes.rvldCdFlipView {
                 let originalShouldRasterize = cardCell.layer.shouldRasterize
                 UIApplication.shared.keyWindow?.endEditing(true)
                 cardCell.layer.shouldRasterize = false
@@ -380,8 +420,8 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
                 }, completion: { (_) -> Void in
                     flipView.removeFromSuperview()
                     cardCell.layer.shouldRasterize = originalShouldRasterize
-                    self.rvldCdFlipView = nil
-                    self.rvldCdIsFlipped = false
+                    self.attributes.rvldCdFlipView = nil
+                    self.attributes.rvldCdIsFlipped = false
                     completion?()
                 })
             }
@@ -390,7 +430,7 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
     open func willInsert(indexPaths: [IndexPath]) {
         for indexPath in indexPaths where indexPath.section == 0 &&
             indexPath.item <= self.revealedIndex {
-                cvTemporaryTop += self.cardHeadHeight
+                self.attributes.cvTemporaryTop += self.cardHeadHeight
                 self.revealedIndex += 1
         }
     }
@@ -406,7 +446,7 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
                                                                         willUnrevealCardAtIndex: indexPath.item)
             }
             if indexPath.item <= self.revealedIndex {
-                cvTemporaryTop -= self.cardHeadHeight
+                self.attributes.cvTemporaryTop -= self.cardHeadHeight
                 self.revealedIndex -= 1
             }
         }
@@ -415,36 +455,7 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
     //////////                                  Private                                       //////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // MARK: Private Variables
-    private var cvIsInitialized = false
-    private var cvItemCount: Int = 0
-    private var cvTapGestureRecognizer: UITapGestureRecognizer?
-    private var cvIgnoreBottomContentOffsetChanges: Bool = false
-    private var cvLastBottomContentOffset: CGFloat = 0
-    private var cvForceUnreveal: Bool = false
-    private var cvDeletedIndexPaths = [IndexPath]()
-    private var cvTemporaryTop: CGFloat = 0
-    private var cdCollBoundsSize: CGSize = .zero
-    private var cdCollViewLayoutAttributes: [HFCardCollectionViewLayoutAttributes]!
-    private var cdCollBottomCardsSet: [Int] = []
-    private var cdCollBottomCardsRevealedIndex: CGFloat = 0
-    private var cdCollCellSize: CGSize = .zero
-    private var rvldCdCell: UICollectionViewCell?
-    private var rvldCdPanGestureRecognizer: UIPanGestureRecognizer?
-    private var rvldCdPanGestureTouchLocationY: CGFloat = 0
-    private var rvldCdFlipView: UIView?
-    private var rvldCdIsFlipped: Bool = false
-    private var mvCdSelectedIndex: Int = -1
-    private var mvCdGestureRecognizer: UILongPressGestureRecognizer?
-    private var mvCdActive: Bool = false
-    private var mvCdGestureStartLocation: CGPoint = .zero
-    private var mvCdGestureCurrentLocation: CGPoint = .zero
-    private var mvCdCenterStart: CGPoint = .zero
-    private var mvCdSnapshotCell: UIView?
-    private var mvCdLastTouchedLocation: CGPoint = .zero
-    private var mvCdLastTouchedIndexPath: IndexPath?
-    private var mvCdStartIndexPath: IndexPath?
-    private var autoscrollDisplayLink: CADisplayLink?
-    private var autoscrollDirection: HFCardCollectionScrollDirection = .unknown
+    private var attributes = HFCardCollectionViewModel()
     // MARK: Private calculated Variable
     private var contentInset: UIEdgeInsets {
         if #available(iOS 11, *) {
@@ -457,13 +468,14 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
         return self.collectionView!.contentOffset.y + self.contentInset.top
     }
     private var bottomCardCount: CGFloat {
-        return CGFloat(min(self.cvItemCount, min(self.bottomNumberOfStackedCards, self.cdCollBottomCardsSet.count)))
+        return CGFloat(min(self.attributes.cvItemCount,
+                           min(self.bottomNumberOfStackedCards, self.attributes.cdCollBottomCardsSet.count)))
     }
     private var contentInsetBottom: CGFloat {
-        if self.cvIgnoreBottomContentOffsetChanges == true {
-            return self.cvLastBottomContentOffset
+        if self.attributes.cvIgnoreBottomContentOffsetChanges == true {
+            return self.attributes.cvLastBottomContentOffset
         }
-        self.cvLastBottomContentOffset = self.contentInset.bottom
+        self.attributes.cvLastBottomContentOffset = self.contentInset.bottom
         return self.contentInset.bottom
     }
     private var scalePerCard: CGFloat {
@@ -474,36 +486,36 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
     }
     // MARK: Initialize HFCardCollectionViewLayout
     internal func installMoveCardsGestureRecognizer() {
-        self.mvCdGestureRecognizer = UILongPressGestureRecognizer(target:
+        self.attributes.mvCdGestureRecognizer = UILongPressGestureRecognizer(target:
             self, action: #selector(self.movingCardGestureHandler))
-        self.mvCdGestureRecognizer?.minimumPressDuration = 0.49
-        self.mvCdGestureRecognizer?.delegate = self
-        self.collectionView?.addGestureRecognizer(self.mvCdGestureRecognizer!)
+        self.attributes.mvCdGestureRecognizer?.minimumPressDuration = 0.49
+        self.attributes.mvCdGestureRecognizer?.delegate = self
+        self.collectionView?.addGestureRecognizer(self.attributes.mvCdGestureRecognizer!)
     }
     private func initializeCardCollectionViewLayout() {
-        self.cvIsInitialized = true
+        self.attributes.cvIsInitialized = true
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.keyboardWillShow(_:)),
                                                name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.keyboardDidHide(_:)),
                                                name: UIResponder.keyboardDidHideNotification, object: nil)
-        self.cvTapGestureRecognizer = UITapGestureRecognizer(target:
+        self.attributes.cvTapGestureRecognizer = UITapGestureRecognizer(target:
             self, action: #selector(self.collectionViewTapGestureHandler))
-        self.cvTapGestureRecognizer?.delegate = self
-        self.collectionView?.addGestureRecognizer(self.cvTapGestureRecognizer!)
+        self.attributes.cvTapGestureRecognizer?.delegate = self
+        self.collectionView?.addGestureRecognizer(self.attributes.cvTapGestureRecognizer!)
     }
     @objc func keyboardWillShow(_ notification: Notification) {
-        self.cvIgnoreBottomContentOffsetChanges = true
+        self.attributes.cvIgnoreBottomContentOffsetChanges = true
     }
     @objc func keyboardDidHide(_ notification: Notification) {
-        self.cvIgnoreBottomContentOffsetChanges = false
+        self.attributes.cvIgnoreBottomContentOffsetChanges = false
     }
     // MARK: UICollectionViewLayout Overrides
     /// The width and height of the collection view’s contents.
     override open var collectionViewContentSize: CGSize {
         let contentHeight = (self.cardHeadHeight *
-            CGFloat(self.cvItemCount)) + self.spaceAtTopForBackgroundView + self.spaceAtBottom
+            CGFloat(self.attributes.cvItemCount)) + self.spaceAtTopForBackgroundView + self.spaceAtBottom
         let contentWidth = self.collectionView!.frame.width - (contentInset.left + contentInset.right)
         return CGSize.init(width: contentWidth, height: contentHeight)
     }
@@ -511,23 +523,23 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
     /// Tells the layout object to update the current layout.
     override open func prepare() {
         super.prepare()
-        self.cvItemCount = self.collectionView!.numberOfItems(inSection: 0)
-        self.cdCollCellSize = self.generateCellSize()
-        if self.cvIsInitialized == false {
+        self.attributes.cvItemCount = self.collectionView!.numberOfItems(inSection: 0)
+        self.attributes.cdCollCellSize = self.generateCellSize()
+        if self.attributes.cvIsInitialized == false {
             self.initializeCardCollectionViewLayout()
         }
-        self.cdCollViewLayoutAttributes = self.generateCardCollectionViewLayoutAttributes()
+        self.attributes.cdCollViewLayoutAttributes = self.generateCardCollectionViewLayoutAttributes()
     }
     /// A layout attributes object containing the information to apply to the item’s cell.
     override open func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        return self.cdCollViewLayoutAttributes[indexPath.item]
+        return self.attributes.cdCollViewLayoutAttributes[indexPath.item]
     }
     /// An array of UICollectionViewLayoutAttributes objects representing the layout
     /// information for the cells and views. The default implementation returns nil.
     ///
     /// - Parameter rect: The rectangle
     override open func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        let attributes =  self.cdCollViewLayoutAttributes.filter { (layout) -> Bool in
+        let attributes =  self.attributes.cdCollViewLayoutAttributes.filter { (layout) -> Bool in
             return (layout.frame.intersects(rect))
         }
         return attributes
@@ -582,11 +594,11 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
     /// This method is called when there is an update with deletes to the collection view.
     override open func prepare(forCollectionViewUpdates updateItems: [UICollectionViewUpdateItem]) {
         super.prepare(forCollectionViewUpdates: updateItems)
-        cvDeletedIndexPaths.removeAll(keepingCapacity: false)
+        self.attributes.cvDeletedIndexPaths.removeAll(keepingCapacity: false)
         for update in updateItems {
             switch update.updateAction {
             case .delete:
-                cvDeletedIndexPaths.append(update.indexPathBeforeUpdate!)
+                self.attributes.cvDeletedIndexPaths.append(update.indexPathBeforeUpdate!)
             default:
                 return
             }
@@ -596,7 +608,7 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
     override open func finalLayoutAttributesForDisappearingItem(at
         itemIndexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         let attrs = super.finalLayoutAttributesForDisappearingItem(at: itemIndexPath)
-        if cvDeletedIndexPaths.contains(itemIndexPath) {
+        if self.attributes.cvDeletedIndexPaths.contains(itemIndexPath) {
             if let attrs = attrs {
                 attrs.alpha = 0.0
                 attrs.transform3D = CATransform3DScale(attrs.transform3D, 0.001, 0.001, 1)
@@ -607,11 +619,11 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
     /// Remove deleted indexPaths
     override open func finalizeCollectionViewUpdates() {
         super.finalizeCollectionViewUpdates()
-        cvDeletedIndexPaths.removeAll(keepingCapacity: false)
+        self.attributes.cvDeletedIndexPaths.removeAll(keepingCapacity: false)
     }
     // MARK: Private Functions for UICollectionViewLayout
     @objc internal func collectionViewTapGestureHandler() {
-        if let tapLocation = self.cvTapGestureRecognizer?.location(in: self.collectionView) {
+        if let tapLocation = self.attributes.cvTapGestureRecognizer?.location(in: self.collectionView) {
             if let indexPath = self.collectionView?.indexPathForItem(at: tapLocation) {
                 self.collectionView?.delegate?.collectionView?(self.collectionView!, didSelectItemAt: indexPath)
             }
@@ -630,34 +642,36 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
     private func generateCardCollectionViewLayoutAttributes() -> [HFCardCollectionViewLayoutAttributes] {
         var cardCollectionViewLayoutAttributes: [HFCardCollectionViewLayoutAttributes] = []
         var shouldReloadAllItems = false
-        if self.cdCollViewLayoutAttributes != nil && self.cvItemCount == self.cdCollViewLayoutAttributes.count {
-            cardCollectionViewLayoutAttributes = self.cdCollViewLayoutAttributes
+        if self.attributes.cdCollViewLayoutAttributes != nil &&
+            self.attributes.cvItemCount == self.attributes.cdCollViewLayoutAttributes.count {
+            cardCollectionViewLayoutAttributes = self.attributes.cdCollViewLayoutAttributes
         } else {
             shouldReloadAllItems = true
         }
         var startIndex = Int((self.collectionView!.contentOffset.y +
-            self.contentInset.top - self.spaceAtTopForBackgroundView + cvTemporaryTop) / self.cardHeadHeight) - 10
+            self.contentInset.top - self.spaceAtTopForBackgroundView + self.attributes.cvTemporaryTop) /
+            self.cardHeadHeight) - 10
         var endBeforeIndex = Int((self.collectionView!.contentOffset.y +
-            self.collectionView!.frame.size.height + cvTemporaryTop) / self.cardHeadHeight) + 5
+            self.collectionView!.frame.size.height + self.attributes.cvTemporaryTop) / self.cardHeadHeight) + 5
         if startIndex < 0 {
             startIndex = 0
         }
-        if endBeforeIndex > self.cvItemCount {
-            endBeforeIndex = self.cvItemCount
+        if endBeforeIndex > self.attributes.cvItemCount {
+            endBeforeIndex = self.attributes.cvItemCount
         }
         if shouldReloadAllItems == true {
             startIndex = 0
-            endBeforeIndex = self.cvItemCount
+            endBeforeIndex = self.attributes.cvItemCount
         }
-        self.cdCollBottomCardsSet = self.generateBottomIndexes()
+        self.attributes.cdCollBottomCardsSet = self.generateBottomIndexes()
         var bottomIndex: CGFloat = 0
         for itemIndex in startIndex..<endBeforeIndex {
             let indexPath = IndexPath(item: itemIndex, section: 0)
             let cardLayoutAttribute = HFCardCollectionViewLayoutAttributes.init(forCellWith: indexPath)
             cardLayoutAttribute.zIndex = itemIndex
             if self.revealedIndex < 0 && self.collapseAllCards == false {
-                self.collectionView!.contentOffset.y += cvTemporaryTop
-                cvTemporaryTop = 0
+                self.collectionView!.contentOffset.y += self.attributes.cvTemporaryTop
+                self.attributes.cvTemporaryTop = 0
                 self.generateNonRevealedCardsAttribute(cardLayoutAttribute)
             } else if self.revealedIndex == itemIndex && self.collapseAllCards == false {
                 self.generateRevealedCardAttribute(cardLayoutAttribute)
@@ -677,7 +691,8 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
             if self.collapseAllCards == false {
                 return []
             } else {
-                let startIndex: Int = Int((self.contentOffsetTop + cvTemporaryTop) / self.cardHeadHeight)
+                let startIndex: Int = Int((self.contentOffsetTop + self.attributes.cvTemporaryTop)
+                    / self.cardHeadHeight)
                 let endIndex = max(0, startIndex + self.bottomNumberOfStackedCards - 2)
                 return Array(startIndex...endIndex)
             }
@@ -688,15 +703,15 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
         if minIndex < 0 {
             minIndex = 0
             maxIndex = self.revealedIndex + half + abs(self.revealedIndex - half)
-        } else if maxIndex >= self.cvItemCount {
-            minIndex = (self.cvItemCount - 2 * half) - 1
-            maxIndex = self.cvItemCount - 1
+        } else if maxIndex >= self.attributes.cvItemCount {
+            minIndex = (self.attributes.cvItemCount - 2 * half) - 1
+            maxIndex = self.attributes.cvItemCount - 1
         }
-        self.cdCollBottomCardsRevealedIndex = 0
+        self.attributes.cdCollBottomCardsRevealedIndex = 0
         return Array(minIndex...maxIndex).filter({ (value) -> Bool in
             if value >= 0 && value != self.revealedIndex {
                 if value < self.revealedIndex {
-                    self.cdCollBottomCardsRevealedIndex += 1
+                    self.attributes.cdCollBottomCardsRevealedIndex += 1
                 }
                 return true
             }
@@ -705,22 +720,23 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
     }
     private func generateNonRevealedCardsAttribute(_ attribute: HFCardCollectionViewLayoutAttributes) {
         let cardHeadHeight = self.calculateCardHeadHeight()
-        let startIndex = Int((self.contentOffsetTop + cvTemporaryTop -
+        let startIndex = Int((self.contentOffsetTop + self.attributes.cvTemporaryTop -
             self.spaceAtTopForBackgroundView) / cardHeadHeight)
         let currentIndex = attribute.indexPath.item
-        if currentIndex == self.mvCdSelectedIndex {
+        if currentIndex == self.attributes.mvCdSelectedIndex {
             attribute.alpha = 0.0
         } else {
             attribute.alpha = 1.0
         }
         let currentFrame = CGRect(x: 0, y: self.spaceAtTopForBackgroundView +
             cardHeadHeight * CGFloat(currentIndex),
-                                  width: self.cdCollCellSize.width, height: self.cdCollCellSize.height)
+                                  width: self.attributes.cdCollCellSize.width,
+                                  height: self.attributes.cdCollCellSize.height)
         if self.contentOffsetTop >= 0 && self.contentOffsetTop <= self.spaceAtTopForBackgroundView {
             attribute.frame = currentFrame
         } else if self.contentOffsetTop > self.spaceAtTopForBackgroundView {
             attribute.isHidden = (self.scrollStopCardsAtTop == true && currentIndex < startIndex)
-            if self.mvCdSelectedIndex >= 0 && currentIndex + 1 == self.mvCdSelectedIndex {
+            if self.attributes.mvCdSelectedIndex >= 0 && currentIndex + 1 == self.attributes.mvCdSelectedIndex {
                 attribute.isHidden = false
             }
             if self.scrollStopCardsAtTop == true && ((currentIndex != 0 &&
@@ -750,13 +766,14 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
     }
     private func generateRevealedCardAttribute(_ attribute: HFCardCollectionViewLayoutAttributes) {
         attribute.isRevealed = true
-        if self.cvItemCount == 1 {
+        if self.attributes.cvItemCount == 1 {
             attribute.frame = CGRect.init(x: 0, y: self.contentOffsetTop +
                 self.spaceAtTopForBackgroundView + 0.01,
-                                          width: self.cdCollCellSize.width, height: self.cdCollCellSize.height)
+                                          width: self.attributes.cdCollCellSize.width,
+                                          height: self.attributes.cdCollCellSize.height)
         } else {
             attribute.frame = CGRect.init(x: 0, y: self.contentOffsetTop +
-                0.01, width: self.cdCollCellSize.width, height: self.cdCollCellSize.height)
+                0.01, width: self.attributes.cdCollCellSize.width, height: self.attributes.cdCollCellSize.height)
         }
     }
     private func generateBottomCardsAttribute(_ attribute: HFCardCollectionViewLayoutAttributes,
@@ -764,34 +781,38 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
         let index = attribute.indexPath.item
         let posY = self.cardHeadHeight * CGFloat(index)
         let currentFrame = CGRect(x: self.collectionView!.frame.origin.x,
-                                  y: posY, width: self.cdCollCellSize.width,
-                                  height: self.cdCollCellSize.height)
+                                  y: posY, width: self.attributes.cdCollCellSize.width,
+                                  height: self.attributes.cdCollCellSize.height)
         let maxY = self.collectionView!.contentOffset.y +
             self.collectionView!.frame.height
         let contentFrame = CGRect(x: 0, y: self.collectionView!.contentOffset.y,
                                   width: self.collectionView!.frame.width, height: maxY)
-        if self.cdCollBottomCardsSet.contains(index) {
+        if self.attributes.cdCollBottomCardsSet.contains(index) {
             let margin: CGFloat = self.bottomCardLookoutMargin
             let baseHeight = (self.collectionView!.frame.height +
                 self.collectionView!.contentOffset.y) -
                 self.contentInsetBottom - (margin * self.bottomCardCount)
             let scale: CGFloat = self.calculateCardScale(forIndex: bottomIndex)
-            let yAddition: CGFloat = (self.cdCollCellSize.height - (self.cdCollCellSize.height * scale)) / 2
+            let yAddition: CGFloat = (self.attributes.cdCollCellSize.height -
+                (self.attributes.cdCollCellSize.height * scale)) / 2
             let yPos: CGFloat = baseHeight +
                 (bottomIndex * margin) - yAddition
             attribute.frame = CGRect.init(x: 0, y: yPos, width:
-                self.cdCollCellSize.width, height: self.cdCollCellSize.height)
+                self.attributes.cdCollCellSize.width, height: self.attributes.cdCollCellSize.height)
             attribute.transform = CGAffineTransform(scaleX: scale, y: scale)
             bottomIndex += 1
         } else if contentFrame.intersects(currentFrame) {
             attribute.isHidden = true
             attribute.alpha = 0.0
             attribute.frame = CGRect.init(x: 0, y: maxY,
-                                          width: self.cdCollCellSize.width, height: self.cdCollCellSize.height)
+                                          width: self.attributes.cdCollCellSize.width,
+                                          height: self.attributes.cdCollCellSize.height)
         } else {
             attribute.isHidden = true
             attribute.alpha = 0.0
-            attribute.frame = CGRect(x: 0, y: posY, width: cdCollCellSize.width, height: cdCollCellSize.height)
+            attribute.frame = CGRect(x: 0, y: posY,
+                                     width: self.attributes.cdCollCellSize.width,
+                                     height: self.attributes.cdCollCellSize.height)
         }
         attribute.isRevealed = false
     }
@@ -811,60 +832,63 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
                 (self.contentInset.top +
                     self.contentInsetBottom +
                     self.spaceAtTopForBackgroundView)) /
-                CGFloat(self.cvItemCount))
+                CGFloat(self.attributes.cvItemCount))
         }
         return cardHeadHeight
     }
     // MARK: Revealed Card
     private func initializeRevealedCard() -> Bool {
         if let cell = self.collectionView?.cellForItem(at: IndexPath(item: self.revealedIndex, section: 0)) {
-            self.rvldCdCell = cell
-            self.rvldCdPanGestureRecognizer = UIPanGestureRecognizer(target: self,
-                                                                     action:
+            self.attributes.rvldCdCell = cell
+            self.attributes.rvldCdPanGestureRecognizer = UIPanGestureRecognizer(target: self,
+                                                                                action:
                 #selector(self.revealedCardPanGestureHandler))
-            self.rvldCdPanGestureRecognizer?.delegate = self
-            self.rvldCdCell?.addGestureRecognizer(self.rvldCdPanGestureRecognizer!)
+            self.attributes.rvldCdPanGestureRecognizer?.delegate = self
+            self.attributes.rvldCdCell?.addGestureRecognizer(self.attributes.rvldCdPanGestureRecognizer!)
             return true
         }
         return false
     }
     private func deinitializeRevealedCard() {
-        if self.rvldCdCell != nil && self.rvldCdPanGestureRecognizer != nil {
-            self.rvldCdCell?.removeGestureRecognizer(self.rvldCdPanGestureRecognizer!)
-            self.rvldCdPanGestureRecognizer = nil
-            self.rvldCdCell = nil
+        if self.attributes.rvldCdCell != nil && self.attributes.rvldCdPanGestureRecognizer != nil {
+            self.attributes.rvldCdCell?.removeGestureRecognizer(self.attributes.rvldCdPanGestureRecognizer!)
+            self.attributes.rvldCdPanGestureRecognizer = nil
+            self.attributes.rvldCdCell = nil
         }
     }
     @objc internal func revealedCardPanGestureHandler() {
-        if self.cvItemCount == 1 || self.rvldCdIsFlipped == true {
+        if self.attributes.cvItemCount == 1 || self.attributes.rvldCdIsFlipped == true {
             return
         }
-        if let revealedCardPanGestureRecognizer = self.rvldCdPanGestureRecognizer, self.rvldCdCell != nil {
+        if let revealedCardPanGestureRecognizer = self.attributes.rvldCdPanGestureRecognizer,
+            self.attributes.rvldCdCell != nil {
             let gstrTouchLocation = revealedCardPanGestureRecognizer.location(in: self.collectionView)
             let shiftY: CGFloat = (gstrTouchLocation.y -
-                self.rvldCdPanGestureTouchLocationY  > 0) ? gstrTouchLocation.y - self.rvldCdPanGestureTouchLocationY: 0
+                self.attributes.rvldCdPanGestureTouchLocationY  >
+                0) ? gstrTouchLocation.y - self.attributes.rvldCdPanGestureTouchLocationY: 0
             switch revealedCardPanGestureRecognizer.state {
             case .began:
                 UIApplication.shared.keyWindow?.endEditing(true)
-                self.rvldCdPanGestureTouchLocationY = gstrTouchLocation.y
+                self.attributes.rvldCdPanGestureTouchLocationY = gstrTouchLocation.y
             case .changed:
                 let scaleTarget = self.calculateCardScale(forIndex:
-                    self.cdCollBottomCardsRevealedIndex, scaleBehindCard: true)
+                    self.attributes.cdCollBottomCardsRevealedIndex, scaleBehindCard: true)
                 let scaleDiff: CGFloat = 1.0 - scaleTarget
                 let scale: CGFloat = 1.0 - min(((shiftY * scaleDiff) /
                     (self.collectionView!.frame.height / 2)), scaleDiff)
                 let transformY = CGAffineTransform.init(translationX: 0, y: shiftY)
                 let transformScale = CGAffineTransform.init(scaleX: scale, y: scale)
-                self.rvldCdCell?.transform = transformY.concatenating(transformScale)
+                self.attributes.rvldCdCell?.transform = transformY.concatenating(transformScale)
             default:
-                let isNeedReload = (shiftY > self.rvldCdCell!.frame.height / 7) ? true: false
+                let isNeedReload = (shiftY > self.attributes.rvldCdCell!.frame.height / 7) ? true: false
                 let resetY = (isNeedReload) ? self.collectionView!.frame.height: 0
                 let scale: CGFloat = (isNeedReload) ?
-                    self.calculateCardScale(forIndex: self.cdCollBottomCardsRevealedIndex, scaleBehindCard: true): 1.0
+                    self.calculateCardScale(forIndex:
+                        self.attributes.cdCollBottomCardsRevealedIndex, scaleBehindCard: true): 1.0
                 let transformScale = CGAffineTransform.init(scaleX: scale, y: scale)
                 let transformY = CGAffineTransform.init(translationX: 0, y: resetY * (1.0 + (1.0 - scale)))
                 UIView.animate(withDuration: 0.3, animations: {
-                    self.rvldCdCell?.transform = transformY.concatenating(transformScale)
+                    self.attributes.rvldCdCell?.transform = transformY.concatenating(transformScale)
                 }, completion: { (finished) in
                     if isNeedReload && finished {
                         self.revealCardAt(index: self.revealedIndex)
@@ -876,66 +900,70 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
     // MARK: Moving Card
     @objc internal func movingCardGestureHandler() {
         let moveUpOffset: CGFloat = 20
-        if let movingCardGestureRecognizer = self.mvCdGestureRecognizer {
+        if let movingCardGestureRecognizer = self.attributes.mvCdGestureRecognizer {
             switch movingCardGestureRecognizer.state {
             case .began:
-                self.mvCdGestureStartLocation = movingCardGestureRecognizer.location(in: self.collectionView)
-                if let indexPath = self.collectionView?.indexPathForItem(at: self.mvCdGestureStartLocation) {
-                    self.mvCdActive = true
+                self.attributes.mvCdGestureStartLocation = movingCardGestureRecognizer.location(in: self.collectionView)
+                if let indexPath = self.collectionView?.indexPathForItem(at: self.attributes.mvCdGestureStartLocation) {
+                    self.attributes.mvCdActive = true
                     if indexPath.item < self.firstMovableIndex {
-                        self.mvCdActive = false
+                        self.attributes.mvCdActive = false
                         return
                     }
                     if let cell = self.collectionView?.cellForItem(at: indexPath) {
-                        self.mvCdStartIndexPath = indexPath
-                        self.mvCdCenterStart = cell.center
-                        self.mvCdSnapshotCell = cell.snapshotView(afterScreenUpdates: false)
-                        self.mvCdSnapshotCell?.frame = cell.frame
-                        self.mvCdSnapshotCell?.alpha = 1.0
-                        self.mvCdSnapshotCell?.layer.zPosition = cell.layer.zPosition
-                        self.collectionView?.insertSubview(self.mvCdSnapshotCell!, aboveSubview: cell)
+                        self.attributes.mvCdStartIndexPath = indexPath
+                        self.attributes.mvCdCenterStart = cell.center
+                        self.attributes.mvCdSnapshotCell = cell.snapshotView(afterScreenUpdates: false)
+                        self.attributes.mvCdSnapshotCell?.frame = cell.frame
+                        self.attributes.mvCdSnapshotCell?.alpha = 1.0
+                        self.attributes.mvCdSnapshotCell?.layer.zPosition = cell.layer.zPosition
+                        self.collectionView?.insertSubview(self.attributes.mvCdSnapshotCell!, aboveSubview: cell)
                         cell.alpha = 0.0
-                        self.mvCdSelectedIndex = indexPath.item
+                        self.attributes.mvCdSelectedIndex = indexPath.item
                         UIView.animate(withDuration: 0.2, animations: {
-                            self.mvCdSnapshotCell?.frame.origin.y -= moveUpOffset
+                            self.attributes.mvCdSnapshotCell?.frame.origin.y -= moveUpOffset
                         })
                     }
                 } else {
-                    self.mvCdActive = false
+                    self.attributes.mvCdActive = false
                 }
             case .changed:
-                if self.mvCdActive == true {
-                    self.mvCdGestureCurrentLocation = movingCardGestureRecognizer.location(in: self.collectionView)
-                    var currentCenter = self.mvCdCenterStart
-                    currentCenter.y += (self.mvCdGestureCurrentLocation.y - self.mvCdGestureStartLocation.y -
-                        moveUpOffset)
-                    self.mvCdSnapshotCell?.center = currentCenter
-                    if self.mvCdGestureCurrentLocation.y >
+                if self.attributes.mvCdActive == true {
+                    self.attributes.mvCdGestureCurrentLocation =
+                        movingCardGestureRecognizer.location(in: self.collectionView)
+                    var currentCenter = self.attributes.mvCdCenterStart
+                    currentCenter.y += (self.attributes.mvCdGestureCurrentLocation.y -
+                        self.attributes.mvCdGestureStartLocation.y - moveUpOffset)
+                    self.attributes.mvCdSnapshotCell?.center = currentCenter
+                    if self.attributes.mvCdGestureCurrentLocation.y >
                         ((self.collectionView!.contentOffset.y +
                             self.collectionView!.frame.height) -
                             self.spaceAtBottom - self.contentInsetBottom -
                             self.scrollAreaBottom) {
                         self.setupScrollTimer(direction: .down)
-                    } else if (self.mvCdGestureCurrentLocation.y -
+                    } else if (self.attributes.mvCdGestureCurrentLocation.y -
                         self.collectionView!.contentOffset.y) - self.contentInset.top < self.scrollAreaTop {
                         self.setupScrollTimer(direction: .upwards)
                     } else {
                         self.invalidateScrollTimer()
                     }
-                    var tempIndexPath = self.collectionView?.indexPathForItem(at: self.mvCdGestureCurrentLocation)
+                    var tempIndexPath = self.collectionView?.indexPathForItem(at:
+                        self.attributes.mvCdGestureCurrentLocation)
                     if tempIndexPath == nil {
-                        tempIndexPath = self.collectionView?.indexPathForItem(at: self.mvCdLastTouchedLocation)
+                        tempIndexPath = self.collectionView?.indexPathForItem(at:
+                            self.attributes.mvCdLastTouchedLocation)
                     }
                     if let currentTouchedIndexPath = tempIndexPath {
-                        self.mvCdLastTouchedLocation = self.mvCdGestureCurrentLocation
+                        self.attributes.mvCdLastTouchedLocation = self.attributes.mvCdGestureCurrentLocation
                         if currentTouchedIndexPath.item < self.firstMovableIndex {
                             return
                         }
-                        if self.mvCdLastTouchedIndexPath == nil && currentTouchedIndexPath != self.mvCdStartIndexPath! {
-                            self.mvCdLastTouchedIndexPath = self.mvCdStartIndexPath
+                        if self.attributes.mvCdLastTouchedIndexPath ==
+                            nil && currentTouchedIndexPath != self.attributes.mvCdStartIndexPath! {
+                            self.attributes.mvCdLastTouchedIndexPath = self.attributes.mvCdStartIndexPath
                         }
-                        if self.self.mvCdLastTouchedIndexPath != nil &&
-                            self.mvCdLastTouchedIndexPath! != currentTouchedIndexPath {
+                        if self.self.attributes.mvCdLastTouchedIndexPath != nil &&
+                            self.attributes.mvCdLastTouchedIndexPath! != currentTouchedIndexPath {
                             let movingCell = self.collectionView?.cellForItem(at: currentTouchedIndexPath)
                             let movingCellAttr =
                                 self.collectionView?.layoutAttributesForItem(at: currentTouchedIndexPath)
@@ -947,43 +975,44 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
                                     movingCellAttr?.frame.origin.y -= cardHeadHeight
                                 })
                             }
-                            self.mvCdSelectedIndex = currentTouchedIndexPath.item
+                            self.attributes.mvCdSelectedIndex = currentTouchedIndexPath.item
                             self.collectionView?.dataSource?.collectionView?(
                                 self.collectionView!,
-                                moveItemAt: currentTouchedIndexPath, to: self.mvCdLastTouchedIndexPath!)
+                                moveItemAt: currentTouchedIndexPath, to: self.attributes.mvCdLastTouchedIndexPath!)
                             UIView.performWithoutAnimation {
                                 self.collectionView?.moveItem(at:
-                                    currentTouchedIndexPath, to: self.mvCdLastTouchedIndexPath!)
+                                    currentTouchedIndexPath, to: self.attributes.mvCdLastTouchedIndexPath!)
                             }
-                            self.mvCdLastTouchedIndexPath = currentTouchedIndexPath
+                            self.attributes.mvCdLastTouchedIndexPath = currentTouchedIndexPath
                             if let belowCell = self.collectionView?.cellForItem(at: currentTouchedIndexPath) {
-                                self.mvCdSnapshotCell?.removeFromSuperview()
-                                self.collectionView?.insertSubview(self.mvCdSnapshotCell!, belowSubview: belowCell)
-                                self.mvCdSnapshotCell?.layer.zPosition = belowCell.layer.zPosition
+                                self.attributes.mvCdSnapshotCell?.removeFromSuperview()
+                                self.collectionView?.insertSubview(self.attributes.mvCdSnapshotCell!,
+                                                                   belowSubview: belowCell)
+                                self.attributes.mvCdSnapshotCell?.layer.zPosition = belowCell.layer.zPosition
                             } else {
-                                self.collectionView?.sendSubviewToBack(self.mvCdSnapshotCell!)
+                                self.collectionView?.sendSubviewToBack(self.attributes.mvCdSnapshotCell!)
                             }
                         }
                     }
                 }
             case .ended:
                 self.invalidateScrollTimer()
-                if self.mvCdActive == true {
-                    var indexPath = self.mvCdStartIndexPath!
-                    if self.mvCdLastTouchedIndexPath != nil {
-                        indexPath = self.mvCdLastTouchedIndexPath!
+                if self.attributes.mvCdActive == true {
+                    var indexPath = self.attributes.mvCdStartIndexPath!
+                    if self.attributes.mvCdLastTouchedIndexPath != nil {
+                        indexPath = self.attributes.mvCdLastTouchedIndexPath!
                     }
                     if let cell = self.collectionView?.cellForItem(at: indexPath) {
                         UIView.animate(withDuration: 0.2, animations: {
-                            self.mvCdSnapshotCell?.frame = cell.frame
+                            self.attributes.mvCdSnapshotCell?.frame = cell.frame
                         }, completion: {(_) in
-                            self.mvCdActive = false
-                            self.mvCdLastTouchedIndexPath = nil
-                            self.mvCdSelectedIndex = -1
+                            self.attributes.mvCdActive = false
+                            self.attributes.mvCdLastTouchedIndexPath = nil
+                            self.attributes.mvCdSelectedIndex = -1
                             self.collectionView?.reloadData()
-                            self.mvCdSnapshotCell?.removeFromSuperview()
-                            self.mvCdSnapshotCell = nil
-                            if self.mvCdStartIndexPath == indexPath {
+                            self.attributes.mvCdSnapshotCell?.removeFromSuperview()
+                            self.attributes.mvCdSnapshotCell = nil
+                            if self.attributes.mvCdStartIndexPath == indexPath {
                                 UIView.animate(withDuration: 0, animations: {
                                     self.invalidateLayout()
                                 })
@@ -994,44 +1023,39 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
                     }
                 }
             case .cancelled:
-                self.mvCdActive = false
-                self.mvCdLastTouchedIndexPath = nil
-                self.mvCdSelectedIndex = -1
+                self.attributes.mvCdActive = false
+                self.attributes.mvCdLastTouchedIndexPath = nil
+                self.attributes.mvCdSelectedIndex = -1
                 self.collectionView?.reloadData()
-                self.mvCdSnapshotCell?.removeFromSuperview()
-                self.mvCdSnapshotCell = nil
+                self.attributes.mvCdSnapshotCell?.removeFromSuperview()
+                self.attributes.mvCdSnapshotCell = nil
                 self.invalidateLayout()
             default:
                 break
             }
         }
     }
-    // MARK: AutoScroll
-    enum HFCardCollectionScrollDirection: Int {
-        case unknown = 0
-        case upwards
-        case down
-    }
+    
     private func setupScrollTimer(direction: HFCardCollectionScrollDirection) {
-        if self.autoscrollDisplayLink != nil && self.autoscrollDisplayLink!.isPaused == false {
-            if direction == self.autoscrollDirection {
+        if self.attributes.autoscrollDisplayLink != nil && self.attributes.autoscrollDisplayLink!.isPaused == false {
+            if direction == self.attributes.autoscrollDirection {
                 return
             }
         }
         self.invalidateScrollTimer()
-        self.autoscrollDisplayLink = CADisplayLink(target: self,
-                                                   selector: #selector(self.autoscrollHandler(displayLink:)))
-        self.autoscrollDirection = direction
-        self.autoscrollDisplayLink?.add(to: .main, forMode: RunLoop.Mode.common)
+        self.attributes.autoscrollDisplayLink = CADisplayLink(target: self,
+                                                              selector: #selector(self.autoscrollHandler(displayLink:)))
+        self.attributes.autoscrollDirection = direction
+        self.attributes.autoscrollDisplayLink?.add(to: .main, forMode: RunLoop.Mode.common)
     }
     private func invalidateScrollTimer() {
-        if self.autoscrollDisplayLink != nil && self.autoscrollDisplayLink!.isPaused == false {
-            self.autoscrollDisplayLink?.invalidate()
+        if self.attributes.autoscrollDisplayLink != nil && self.attributes.autoscrollDisplayLink!.isPaused == false {
+            self.attributes.autoscrollDisplayLink?.invalidate()
         }
-        self.autoscrollDisplayLink = nil
+        self.attributes.autoscrollDisplayLink = nil
     }
     @objc internal func autoscrollHandler(displayLink: CADisplayLink) {
-        let direction = self.autoscrollDirection
+        let direction = self.attributes.autoscrollDirection
         if direction == .unknown {
             return
         }
@@ -1064,14 +1088,14 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
     }
     private func generateScrollSpeedMultiplier() -> Double {
         var multiplier: Double = 250.0
-        if let movingCardGestureRecognizer = self.mvCdGestureRecognizer {
+        if let movingCardGestureRecognizer = self.attributes.mvCdGestureRecognizer {
             let touchLocation = movingCardGestureRecognizer.location(in: self.collectionView)
             let maxSpeed: CGFloat = 600
-            if self.autoscrollDirection == .upwards {
+            if self.attributes.autoscrollDirection == .upwards {
                 let touchPosY = min(max(0, self.scrollAreaTop -
                     (touchLocation.y - self.contentOffsetTop)), self.scrollAreaTop)
                 multiplier = Double(maxSpeed * (touchPosY / self.scrollAreaTop))
-            } else if self.autoscrollDirection == .down {
+            } else if self.attributes.autoscrollDirection == .down {
                 let offsetTop = ((self.collectionView!.contentOffset.y +
                     self.collectionView!.frame.height) -
                     self.spaceAtBottom - self.contentInsetBottom - self.scrollAreaBottom)
@@ -1089,13 +1113,15 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
     ///
     /// - Parameter gestureRecognizer: The gesture recognizer.
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        if gestureRecognizer == self.mvCdGestureRecognizer || gestureRecognizer == self.cvTapGestureRecognizer {
+        if gestureRecognizer == self.attributes.mvCdGestureRecognizer ||
+            gestureRecognizer == self.attributes.cvTapGestureRecognizer {
             if self.revealedIndex >= 0 {
                 return false
             }
         }
-        if gestureRecognizer == self.rvldCdPanGestureRecognizer {
-            let velocity =  self.rvldCdPanGestureRecognizer?.velocity(in: self.rvldCdPanGestureRecognizer?.view)
+        if gestureRecognizer == self.attributes.rvldCdPanGestureRecognizer {
+            let velocity =  self.attributes.rvldCdPanGestureRecognizer?.velocity(in:
+                self.attributes.rvldCdPanGestureRecognizer?.view)
             let result = abs(velocity!.y) > abs(velocity!.x)
             return result
         }
