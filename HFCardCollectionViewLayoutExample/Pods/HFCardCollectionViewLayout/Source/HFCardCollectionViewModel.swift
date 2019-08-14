@@ -9,6 +9,7 @@
 import UIKit
 
 open class HFCardCollectionViewModel: NSObject {
+     var moveUpOffset: CGFloat = 20
      var cvIsInitialized = false
      var cvItemCount: Int = 0
      var cvTapGestureRecognizer: UITapGestureRecognizer?

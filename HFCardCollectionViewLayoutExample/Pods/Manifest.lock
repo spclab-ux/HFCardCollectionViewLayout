@@ -2,20 +2,21 @@ PODS:
   - HFCardCollectionViewLayout (0.4.2)
 
 DEPENDENCIES:
-  - HFCardCollectionViewLayout (from `https://github.com/spclab-ux/HFCardCollectionViewLayout.git`)
+  - HFCardCollectionViewLayout (from `https://github.com/spclab-ux/HFCardCollectionViewLayout.git`, branch `semiRef`)
 
 EXTERNAL SOURCES:
   HFCardCollectionViewLayout:
+    :branch: semiRef
     :git: https://github.com/spclab-ux/HFCardCollectionViewLayout.git
 
 CHECKOUT OPTIONS:
   HFCardCollectionViewLayout:
-    :commit: 384080ae8f54effd6ff4308e04346acd9c98bad6
+    :commit: 42b15ff62f65afc80b4fe0f47eff65431aa262fc
     :git: https://github.com/spclab-ux/HFCardCollectionViewLayout.git
 
 SPEC CHECKSUMS:
   HFCardCollectionViewLayout: 44a48a69ed11905cb768e5e2223ef8d0d68bbe05
 
-PODFILE CHECKSUM: 8bb6dd634bbe3f8a4b8aa7286bb5155e22049153
+PODFILE CHECKSUM: 797b7ba55cb12bfa685293ca7072f9c8e31c91db
 
 COCOAPODS: 1.7.2
