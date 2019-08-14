@@ -3,5 +3,5 @@ use_frameworks!
 
 target 'HFCardCollectionViewLayoutExample' do
     platform :ios, '10.0'
-    pod 'HFCardCollectionViewLayout', :git => 'https://github.com/spclab-ux/HFCardCollectionViewLayout.git', :branch => 'semiRef'
+    pod 'HFCardCollectionViewLayout', :git => 'https://github.com/spclab-ux/HFCardCollectionViewLayout.git'
 end
