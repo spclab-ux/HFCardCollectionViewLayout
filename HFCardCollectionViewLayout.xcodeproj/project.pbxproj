@@ -15,11 +15,11 @@
 		56E222B222FE1C8C002D7B97 /* HFCardCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E222B122FE1C8C002D7B97 /* HFCardCollectionViewModel.swift */; };
 		56E222C222FE2FA4002D7B97 /* HFCardCollectionViewLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E222C122FE2FA4002D7B97 /* HFCardCollectionViewLayoutAttributes.swift */; };
 		56E222C422FE30FC002D7B97 /* HFCardCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E222C322FE30FC002D7B97 /* HFCardCollectionView.swift */; };
-		5BD2E5FDCB2A7EAEC2CED915 /* Pods_HFCardCollectionViewLayout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC23847657BE130910BFE14 /* Pods_HFCardCollectionViewLayout.framework */; };
+		CB90103F9674CF2D72D0B8FC /* Pods_HFCardCollectionViewLayout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C625B1EE64928C5F1BAC828 /* Pods_HFCardCollectionViewLayout.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		31381DB4816E87430C9926F2 /* Pods-HFCardCollectionViewLayout.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HFCardCollectionViewLayout.release.xcconfig"; path = "Target Support Files/Pods-HFCardCollectionViewLayout/Pods-HFCardCollectionViewLayout.release.xcconfig"; sourceTree = "<group>"; };
+		2C625B1EE64928C5F1BAC828 /* Pods_HFCardCollectionViewLayout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HFCardCollectionViewLayout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		416D2D621E5F113600D8A570 /* HFCardCollectionViewLayout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HFCardCollectionViewLayout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		416D2D651E5F113600D8A570 /* HFCardCollectionViewLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HFCardCollectionViewLayout.h; sourceTree = "<group>"; };
 		416D2D661E5F113600D8A570 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -30,8 +30,8 @@
 		56E222B122FE1C8C002D7B97 /* HFCardCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HFCardCollectionViewModel.swift; path = Source/HFCardCollectionViewModel.swift; sourceTree = SOURCE_ROOT; };
 		56E222C122FE2FA4002D7B97 /* HFCardCollectionViewLayoutAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HFCardCollectionViewLayoutAttributes.swift; path = Source/HFCardCollectionViewLayoutAttributes.swift; sourceTree = SOURCE_ROOT; };
 		56E222C322FE30FC002D7B97 /* HFCardCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HFCardCollectionView.swift; path = Source/HFCardCollectionView.swift; sourceTree = SOURCE_ROOT; };
-		5BC23847657BE130910BFE14 /* Pods_HFCardCollectionViewLayout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HFCardCollectionViewLayout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		98684D70501442E03732ECB7 /* Pods-HFCardCollectionViewLayout.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HFCardCollectionViewLayout.debug.xcconfig"; path = "Target Support Files/Pods-HFCardCollectionViewLayout/Pods-HFCardCollectionViewLayout.debug.xcconfig"; sourceTree = "<group>"; };
+		CE81BFD4C4FF22FD8C9720BE /* Pods-HFCardCollectionViewLayout.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HFCardCollectionViewLayout.debug.xcconfig"; path = "Target Support Files/Pods-HFCardCollectionViewLayout/Pods-HFCardCollectionViewLayout.debug.xcconfig"; sourceTree = "<group>"; };
+		EE767F869AD346CE8E59285B /* Pods-HFCardCollectionViewLayout.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HFCardCollectionViewLayout.release.xcconfig"; path = "Target Support Files/Pods-HFCardCollectionViewLayout/Pods-HFCardCollectionViewLayout.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,7 +39,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5BD2E5FDCB2A7EAEC2CED915 /* Pods_HFCardCollectionViewLayout.framework in Frameworks */,
+				CB90103F9674CF2D72D0B8FC /* Pods_HFCardCollectionViewLayout.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,7 +52,7 @@
 				416D2D641E5F113600D8A570 /* HFCardCollectionViewLayout */,
 				416D2D631E5F113600D8A570 /* Products */,
 				965B297F21217A1305704448 /* Pods */,
-				F6309A6F0C757780044B8C06 /* Frameworks */,
+				A6008D0CFBB16193CB2C45F3 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -83,16 +83,16 @@
 		965B297F21217A1305704448 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				98684D70501442E03732ECB7 /* Pods-HFCardCollectionViewLayout.debug.xcconfig */,
-				31381DB4816E87430C9926F2 /* Pods-HFCardCollectionViewLayout.release.xcconfig */,
+				CE81BFD4C4FF22FD8C9720BE /* Pods-HFCardCollectionViewLayout.debug.xcconfig */,
+				EE767F869AD346CE8E59285B /* Pods-HFCardCollectionViewLayout.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		F6309A6F0C757780044B8C06 /* Frameworks */ = {
+		A6008D0CFBB16193CB2C45F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5BC23847657BE130910BFE14 /* Pods_HFCardCollectionViewLayout.framework */,
+				2C625B1EE64928C5F1BAC828 /* Pods_HFCardCollectionViewLayout.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -115,7 +115,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 416D2D6A1E5F113600D8A570 /* Build configuration list for PBXNativeTarget "HFCardCollectionViewLayout" */;
 			buildPhases = (
-				70F0F7518AAE85779201C41C /* [CP] Check Pods Manifest.lock */,
+				CB8D232FBD89D07A82B19624 /* [CP] Check Pods Manifest.lock */,
 				416D2D5D1E5F113600D8A570 /* Sources */,
 				416D2D5E1E5F113600D8A570 /* Frameworks */,
 				416D2D5F1E5F113600D8A570 /* Headers */,
@@ -194,7 +194,7 @@
 			shellPath = /bin/sh;
 			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
-		70F0F7518AAE85779201C41C /* [CP] Check Pods Manifest.lock */ = {
+		CB8D232FBD89D07A82B19624 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -357,7 +357,7 @@
 		};
 		416D2D6B1E5F113600D8A570 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 98684D70501442E03732ECB7 /* Pods-HFCardCollectionViewLayout.debug.xcconfig */;
+			baseConfigurationReference = CE81BFD4C4FF22FD8C9720BE /* Pods-HFCardCollectionViewLayout.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -379,7 +379,7 @@
 		};
 		416D2D6C1E5F113600D8A570 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 31381DB4816E87430C9926F2 /* Pods-HFCardCollectionViewLayout.release.xcconfig */;
+			baseConfigurationReference = EE767F869AD346CE8E59285B /* Pods-HFCardCollectionViewLayout.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
