@@ -10,46 +10,6 @@
 
 import UIKit
 
-enum HFCardCollectionScrollDirection: Int {
-    case unknown = 0
-    case upwards
-    case down
-}
-
-open class HFCardCollectionViewModel: NSObject {
-    var cvIsInitialized = false
-    var cvItemCount: Int = 0
-    var cvTapGestureRecognizer: UITapGestureRecognizer?
-    var cvIgnoreBottomContentOffsetChanges: Bool = false
-    var cvLastBottomContentOffset: CGFloat = 0
-    var cvForceUnreveal: Bool = false
-    var cvDeletedIndexPaths = [IndexPath]()
-    var cvTemporaryTop: CGFloat = 0
-    var cdCollBoundsSize: CGSize = .zero
-    var cdCollViewLayoutAttributes: [HFCardCollectionViewLayoutAttributes]!
-    var cdCollBottomCardsSet: [Int] = []
-    var cdCollBottomCardsRevealedIndex: CGFloat = 0
-    var cdCollCellSize: CGSize = .zero
-    var rvldCdCell: UICollectionViewCell?
-    var rvldCdPanGestureRecognizer: UIPanGestureRecognizer?
-    var rvldCdPanGestureTouchLocationY: CGFloat = 0
-    var rvldCdFlipView: UIView?
-    var rvldCdIsFlipped: Bool = false
-    var mvCdSelectedIndex: Int = -1
-    var mvCdGestureRecognizer: UILongPressGestureRecognizer?
-    var mvCdActive: Bool = false
-    var mvCdGestureStartLocation: CGPoint = .zero
-    var mvCdGestureCurrentLocation: CGPoint = .zero
-    var mvCdCenterStart: CGPoint = .zero
-    var mvCdSnapshotCell: UIView?
-    var mvCdLastTouchedLocation: CGPoint = .zero
-    var mvCdLastTouchedIndexPath: IndexPath?
-    var mvCdStartIndexPath: IndexPath?
-    var autoscrollDisplayLink: CADisplayLink?
-    var autoscrollDirection: HFCardCollectionScrollDirection = .unknown
-}
-
-
 /// The HFCardCollectionViewLayout provides a card stack layout not quite similar like the apps Reminder and Wallet.
 open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecognizerDelegate {
     // MARK: Public Variables
@@ -392,8 +352,8 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
             cardCell.layer.shouldRasterize = false
             UIView.transition(with: cardCell, duration: 0.5,
                               options: [.transitionFlipFromRight], animations: { () -> Void in
-                                cardCell.contentView.isHidden = true
-                                toView.isHidden = false
+                cardCell.contentView.isHidden = true
+                toView.isHidden = false
             }, completion: { (_) -> Void in
                 cardCell.layer.shouldRasterize = originalShouldRasterize
                 completion?()
@@ -415,8 +375,8 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
                 cardCell.layer.shouldRasterize = false
                 UIView.transition(with: cardCell, duration: 0.5, options: [.transitionFlipFromLeft],
                                   animations: { () -> Void in
-                                    flipView.isHidden = true
-                                    cardCell.contentView.isHidden = false
+                    flipView.isHidden = true
+                    cardCell.contentView.isHidden = false
                 }, completion: { (_) -> Void in
                     flipView.removeFromSuperview()
                     cardCell.layer.shouldRasterize = originalShouldRasterize
@@ -430,26 +390,26 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
     open func willInsert(indexPaths: [IndexPath]) {
         for indexPath in indexPaths where indexPath.section == 0 &&
             indexPath.item <= self.revealedIndex {
-                self.attributes.cvTemporaryTop += self.cardHeadHeight
-                self.revealedIndex += 1
-        }
+                    self.attributes.cvTemporaryTop += self.cardHeadHeight
+                    self.revealedIndex += 1
+            }
     }
-    
+
     open func willDelete(indexPaths: [IndexPath]) {
         let collectionViewLayoutDelegate = self.collectionView?.delegate as? HFCardCollectionViewLayoutDelegate
         for indexPath in indexPaths where indexPath.section == 0 {
-            if indexPath.item == self.revealedIndex {
-                self.revealedIndex = -1
-                self.collectionView?.isScrollEnabled = true
-                self.deinitializeRevealedCard()
-                collectionViewLayoutDelegate?.cardCollectionViewLayout?(self,
-                                                                        willUnrevealCardAtIndex: indexPath.item)
+                if indexPath.item == self.revealedIndex {
+                    self.revealedIndex = -1
+                    self.collectionView?.isScrollEnabled = true
+                    self.deinitializeRevealedCard()
+                    collectionViewLayoutDelegate?.cardCollectionViewLayout?(self,
+                                                                            willUnrevealCardAtIndex: indexPath.item)
+                }
+                if indexPath.item <= self.revealedIndex {
+                    self.attributes.cvTemporaryTop -= self.cardHeadHeight
+                    self.revealedIndex -= 1
+                }
             }
-            if indexPath.item <= self.revealedIndex {
-                self.attributes.cvTemporaryTop -= self.cardHeadHeight
-                self.revealedIndex -= 1
-            }
-        }
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////                                  Private                                       //////////
@@ -519,7 +479,7 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
         let contentWidth = self.collectionView!.frame.width - (contentInset.left + contentInset.right)
         return CGSize.init(width: contentWidth, height: contentHeight)
     }
-    
+
     /// Tells the layout object to update the current layout.
     override open func prepare() {
         super.prepare()
@@ -841,7 +801,7 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
         if let cell = self.collectionView?.cellForItem(at: IndexPath(item: self.revealedIndex, section: 0)) {
             self.attributes.rvldCdCell = cell
             self.attributes.rvldCdPanGestureRecognizer = UIPanGestureRecognizer(target: self,
-                                                                                action:
+                                                                     action:
                 #selector(self.revealedCardPanGestureHandler))
             self.attributes.rvldCdPanGestureRecognizer?.delegate = self
             self.attributes.rvldCdCell?.addGestureRecognizer(self.attributes.rvldCdPanGestureRecognizer!)
@@ -1035,7 +995,7 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
             }
         }
     }
-    
+
     private func setupScrollTimer(direction: HFCardCollectionScrollDirection) {
         if self.attributes.autoscrollDisplayLink != nil && self.attributes.autoscrollDisplayLink!.isPaused == false {
             if direction == self.attributes.autoscrollDirection {
@@ -1044,7 +1004,7 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
         }
         self.invalidateScrollTimer()
         self.attributes.autoscrollDisplayLink = CADisplayLink(target: self,
-                                                              selector: #selector(self.autoscrollHandler(displayLink:)))
+                                                   selector: #selector(self.autoscrollHandler(displayLink:)))
         self.attributes.autoscrollDirection = direction
         self.attributes.autoscrollDisplayLink?.add(to: .main, forMode: RunLoop.Mode.common)
     }

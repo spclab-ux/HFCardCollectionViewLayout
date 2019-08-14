@@ -7,18 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3DC892FB404E6DD27226B79456A651A1 /* HFCardCollectionViewLayout-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 6256C7A0DEBB278E460BF984756BB43E /* HFCardCollectionViewLayout-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		45E5B6347A6A1FF1437D0CED4E71788C /* HFCardCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF21E6901E4AEA8EBB2FACA63B8DB76 /* HFCardCollectionViewLayout.swift */; };
-		5343C4A73D03D590DF5E4470CD00164A /* HFCardCollectionViewLayoutModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79BA736C7A8B86806BB89E6D8967809 /* HFCardCollectionViewLayoutModel.swift */; };
-		84A6A54E5B620422A89C2D6F7B1A2950 /* HFCardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D757075E1683877CB322F85EC67373CC /* HFCardCollectionViewCell.swift */; };
-		85FFB93669B117FC061560AEC94FBED5 /* HFCardCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BD14DB9BD711B3D4C4C54BD8FBE046 /* HFCardCollectionView.swift */; };
+		3DC892FB404E6DD27226B79456A651A1 /* HFCardCollectionViewLayout-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D32A7B8547560A0A827B6976DDB72AB /* HFCardCollectionViewLayout-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		42C23F3D1281D3BD57307BE8CAE00AF4 /* HFCardCollectionViewLayout-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F388893F719B0EB65A8F344259A6D1F8 /* HFCardCollectionViewLayout-dummy.m */; };
+		559E2EBF282CE8769AC4506C5BADBFC3 /* HFCardCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCF4CF3EFEBD9584CE029EA7E172F8B /* HFCardCollectionViewModel.swift */; };
+		7DEAFB573A87B98735F733186F8378FB /* HFCardCollectionViewLayoutDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D237444F997DE70BDB49F25D4B62E090 /* HFCardCollectionViewLayoutDelegate.swift */; };
 		9A8D9E6CD74F41E31937BBD31CD6BF85 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
 		AA6FD6F5B4FDF785E9E07D682C8094B0 /* Pods-HFCardCollectionViewLayoutExample-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 87A2219AAEC5482EF1ABF1B0E8BA6E1B /* Pods-HFCardCollectionViewLayoutExample-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B27D401A5CBEADDCA4DF2105DF782CDE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
-		B5505821486F60F4E7464836FE0F7BEB /* HFCardCollectionViewLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7AD3EE97BC32F9E7B9E8412E669849 /* HFCardCollectionViewLayoutAttributes.swift */; };
 		BA87645814AEC983EC1766439DE8ED0B /* Pods-HFCardCollectionViewLayoutExample-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C4A1036EA09D7A7D80E505A5E4FE2B /* Pods-HFCardCollectionViewLayoutExample-dummy.m */; };
-		C3722E3473783644786DC043491D5524 /* HFCardCollectionViewLayout-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F9864B7FBF4F5EB0CEEE8CE8976456 /* HFCardCollectionViewLayout-dummy.m */; };
-		EC8E49EB5FE2B07E9A8693E7BBEF4D8F /* HFCardCollectionViewLayoutDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD4D705AE6248193713E5065467D63A /* HFCardCollectionViewLayoutDelegate.swift */; };
+		CAF9B285445762C4CE29E9578DD7E545 /* HFCardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DE43D584D61C275B33F6E92D215EDB /* HFCardCollectionViewCell.swift */; };
+		E07A0BCECA1BB917C42FE014C48EF646 /* HFCardCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC6EFE2789567894ABBD23D81E208BF /* HFCardCollectionView.swift */; };
+		E6DDD22A27FF69B75F42771DBB564ECF /* HFCardCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98F435F6007A73A1E1370DA19365829 /* HFCardCollectionViewLayout.swift */; };
+		F4FCCEB40915FE512C8C751B0AD3809B /* HFCardCollectionViewLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142D49C62C4F1D64101316E913BAD2CD /* HFCardCollectionViewLayoutAttributes.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,30 +33,30 @@
 
 /* Begin PBXFileReference section */
 		0AB806CFEC9C527D3A541B702CE43CDB /* Pods-HFCardCollectionViewLayoutExample.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-HFCardCollectionViewLayoutExample.modulemap"; sourceTree = "<group>"; };
-		0C1E000270C274243A55A7B79339E647 /* HFCardCollectionViewLayout-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "HFCardCollectionViewLayout-Info.plist"; sourceTree = "<group>"; };
+		0D1FB86AB57650770887E572DFCD1705 /* HFCardCollectionViewLayout-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "HFCardCollectionViewLayout-prefix.pch"; sourceTree = "<group>"; };
+		142D49C62C4F1D64101316E913BAD2CD /* HFCardCollectionViewLayoutAttributes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HFCardCollectionViewLayoutAttributes.swift; path = Source/HFCardCollectionViewLayoutAttributes.swift; sourceTree = "<group>"; };
+		1D16818D99F34A6C2467293BC23B23F0 /* HFCardCollectionViewLayout.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = HFCardCollectionViewLayout.xcconfig; sourceTree = "<group>"; };
 		3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		3E058D2E73C0E9BF3E0E4DDF5C33A303 /* Pods-HFCardCollectionViewLayoutExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-HFCardCollectionViewLayoutExample.debug.xcconfig"; sourceTree = "<group>"; };
 		46852FAF6310BFAE826A70361334D8B1 /* Pods-HFCardCollectionViewLayoutExample-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-HFCardCollectionViewLayoutExample-acknowledgements.markdown"; sourceTree = "<group>"; };
-		4D7AD3EE97BC32F9E7B9E8412E669849 /* HFCardCollectionViewLayoutAttributes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HFCardCollectionViewLayoutAttributes.swift; path = Source/HFCardCollectionViewLayoutAttributes.swift; sourceTree = "<group>"; };
-		593D4E38967222CD6306084997B7D165 /* HFCardCollectionViewLayout.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = HFCardCollectionViewLayout.modulemap; sourceTree = "<group>"; };
-		6256C7A0DEBB278E460BF984756BB43E /* HFCardCollectionViewLayout-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "HFCardCollectionViewLayout-umbrella.h"; sourceTree = "<group>"; };
-		64BD14DB9BD711B3D4C4C54BD8FBE046 /* HFCardCollectionView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HFCardCollectionView.swift; path = Source/HFCardCollectionView.swift; sourceTree = "<group>"; };
+		512AE60A91E245D093377BD4E36246E5 /* HFCardCollectionViewLayout-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "HFCardCollectionViewLayout-Info.plist"; sourceTree = "<group>"; };
 		66FECE11CF41576C4EF3A69DB1E27B17 /* HFCardCollectionViewLayout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = HFCardCollectionViewLayout.framework; path = HFCardCollectionViewLayout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6CC6EFE2789567894ABBD23D81E208BF /* HFCardCollectionView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HFCardCollectionView.swift; path = Source/HFCardCollectionView.swift; sourceTree = "<group>"; };
 		833DA99D88788B5F31E1693C237772F3 /* Pods_HFCardCollectionViewLayoutExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_HFCardCollectionViewLayoutExample.framework; path = "Pods-HFCardCollectionViewLayoutExample.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		87A2219AAEC5482EF1ABF1B0E8BA6E1B /* Pods-HFCardCollectionViewLayoutExample-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-HFCardCollectionViewLayoutExample-umbrella.h"; sourceTree = "<group>"; };
 		8BCAC26ED5A6B8CFE51480AE6AE9AA3C /* Pods-HFCardCollectionViewLayoutExample-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-HFCardCollectionViewLayoutExample-acknowledgements.plist"; sourceTree = "<group>"; };
 		9630B5F5E05C928C5E38ABDA3850B938 /* Pods-HFCardCollectionViewLayoutExample-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-HFCardCollectionViewLayoutExample-Info.plist"; sourceTree = "<group>"; };
+		9D32A7B8547560A0A827B6976DDB72AB /* HFCardCollectionViewLayout-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "HFCardCollectionViewLayout-umbrella.h"; sourceTree = "<group>"; };
 		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		9DF21E6901E4AEA8EBB2FACA63B8DB76 /* HFCardCollectionViewLayout.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HFCardCollectionViewLayout.swift; path = Source/HFCardCollectionViewLayout.swift; sourceTree = "<group>"; };
-		A11BEF253EFCAA1387B004412F575951 /* HFCardCollectionViewLayout.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = HFCardCollectionViewLayout.xcconfig; sourceTree = "<group>"; };
+		B4DE43D584D61C275B33F6E92D215EDB /* HFCardCollectionViewCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HFCardCollectionViewCell.swift; path = Source/HFCardCollectionViewCell.swift; sourceTree = "<group>"; };
+		B98F435F6007A73A1E1370DA19365829 /* HFCardCollectionViewLayout.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HFCardCollectionViewLayout.swift; path = Source/HFCardCollectionViewLayout.swift; sourceTree = "<group>"; };
 		C0C4A1036EA09D7A7D80E505A5E4FE2B /* Pods-HFCardCollectionViewLayoutExample-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-HFCardCollectionViewLayoutExample-dummy.m"; sourceTree = "<group>"; };
-		C79BA736C7A8B86806BB89E6D8967809 /* HFCardCollectionViewLayoutModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HFCardCollectionViewLayoutModel.swift; path = Source/HFCardCollectionViewLayoutModel.swift; sourceTree = "<group>"; };
-		D3F9864B7FBF4F5EB0CEEE8CE8976456 /* HFCardCollectionViewLayout-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "HFCardCollectionViewLayout-dummy.m"; sourceTree = "<group>"; };
+		CDCF4CF3EFEBD9584CE029EA7E172F8B /* HFCardCollectionViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HFCardCollectionViewModel.swift; path = Source/HFCardCollectionViewModel.swift; sourceTree = "<group>"; };
+		D237444F997DE70BDB49F25D4B62E090 /* HFCardCollectionViewLayoutDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HFCardCollectionViewLayoutDelegate.swift; path = Source/HFCardCollectionViewLayoutDelegate.swift; sourceTree = "<group>"; };
+		D2B3E08629EFBDB11F0C77A2217ADB0B /* HFCardCollectionViewLayout.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = HFCardCollectionViewLayout.modulemap; sourceTree = "<group>"; };
 		D68A972B5D70CA9C12514F068752D0DD /* Pods-HFCardCollectionViewLayoutExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-HFCardCollectionViewLayoutExample.release.xcconfig"; sourceTree = "<group>"; };
-		D757075E1683877CB322F85EC67373CC /* HFCardCollectionViewCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HFCardCollectionViewCell.swift; path = Source/HFCardCollectionViewCell.swift; sourceTree = "<group>"; };
-		DDD4D705AE6248193713E5065467D63A /* HFCardCollectionViewLayoutDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HFCardCollectionViewLayoutDelegate.swift; path = Source/HFCardCollectionViewLayoutDelegate.swift; sourceTree = "<group>"; };
 		EDB103317CD90327381F29AAD52944B7 /* Pods-HFCardCollectionViewLayoutExample-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-HFCardCollectionViewLayoutExample-frameworks.sh"; sourceTree = "<group>"; };
-		FE4349E9BEE9AA5EF4A8B6788508B943 /* HFCardCollectionViewLayout-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "HFCardCollectionViewLayout-prefix.pch"; sourceTree = "<group>"; };
+		F388893F719B0EB65A8F344259A6D1F8 /* HFCardCollectionViewLayout-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "HFCardCollectionViewLayout-dummy.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,26 +88,41 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		14885FCB7DFD65D2FCE4DB3B0B95C6E4 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				D2B3E08629EFBDB11F0C77A2217ADB0B /* HFCardCollectionViewLayout.modulemap */,
+				1D16818D99F34A6C2467293BC23B23F0 /* HFCardCollectionViewLayout.xcconfig */,
+				F388893F719B0EB65A8F344259A6D1F8 /* HFCardCollectionViewLayout-dummy.m */,
+				512AE60A91E245D093377BD4E36246E5 /* HFCardCollectionViewLayout-Info.plist */,
+				0D1FB86AB57650770887E572DFCD1705 /* HFCardCollectionViewLayout-prefix.pch */,
+				9D32A7B8547560A0A827B6976DDB72AB /* HFCardCollectionViewLayout-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/HFCardCollectionViewLayout";
+			sourceTree = "<group>";
+		};
 		196D55BE61EFD4C8DEEB378F97C5617F /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				DEF75DE9022950B4C55B951422E83C3D /* HFCardCollectionViewLayout */,
+				5F98B0B3789D110BE8671F6F0699BF6E /* HFCardCollectionViewLayout */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		A4A0486671FDC10F63ACEA8961CB2FCA /* Support Files */ = {
+		5F98B0B3789D110BE8671F6F0699BF6E /* HFCardCollectionViewLayout */ = {
 			isa = PBXGroup;
 			children = (
-				593D4E38967222CD6306084997B7D165 /* HFCardCollectionViewLayout.modulemap */,
-				A11BEF253EFCAA1387B004412F575951 /* HFCardCollectionViewLayout.xcconfig */,
-				D3F9864B7FBF4F5EB0CEEE8CE8976456 /* HFCardCollectionViewLayout-dummy.m */,
-				0C1E000270C274243A55A7B79339E647 /* HFCardCollectionViewLayout-Info.plist */,
-				FE4349E9BEE9AA5EF4A8B6788508B943 /* HFCardCollectionViewLayout-prefix.pch */,
-				6256C7A0DEBB278E460BF984756BB43E /* HFCardCollectionViewLayout-umbrella.h */,
+				6CC6EFE2789567894ABBD23D81E208BF /* HFCardCollectionView.swift */,
+				B4DE43D584D61C275B33F6E92D215EDB /* HFCardCollectionViewCell.swift */,
+				B98F435F6007A73A1E1370DA19365829 /* HFCardCollectionViewLayout.swift */,
+				142D49C62C4F1D64101316E913BAD2CD /* HFCardCollectionViewLayoutAttributes.swift */,
+				D237444F997DE70BDB49F25D4B62E090 /* HFCardCollectionViewLayoutDelegate.swift */,
+				CDCF4CF3EFEBD9584CE029EA7E172F8B /* HFCardCollectionViewModel.swift */,
+				14885FCB7DFD65D2FCE4DB3B0B95C6E4 /* Support Files */,
 			);
-			name = "Support Files";
-			path = "../Target Support Files/HFCardCollectionViewLayout";
+			name = HFCardCollectionViewLayout;
+			path = HFCardCollectionViewLayout;
 			sourceTree = "<group>";
 		};
 		AFEA47F5B216A091245C8F16B9169172 /* Pods-HFCardCollectionViewLayoutExample */ = {
@@ -162,21 +177,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		DEF75DE9022950B4C55B951422E83C3D /* HFCardCollectionViewLayout */ = {
-			isa = PBXGroup;
-			children = (
-				64BD14DB9BD711B3D4C4C54BD8FBE046 /* HFCardCollectionView.swift */,
-				D757075E1683877CB322F85EC67373CC /* HFCardCollectionViewCell.swift */,
-				9DF21E6901E4AEA8EBB2FACA63B8DB76 /* HFCardCollectionViewLayout.swift */,
-				4D7AD3EE97BC32F9E7B9E8412E669849 /* HFCardCollectionViewLayoutAttributes.swift */,
-				DDD4D705AE6248193713E5065467D63A /* HFCardCollectionViewLayoutDelegate.swift */,
-				C79BA736C7A8B86806BB89E6D8967809 /* HFCardCollectionViewLayoutModel.swift */,
-				A4A0486671FDC10F63ACEA8961CB2FCA /* Support Files */,
-			);
-			name = HFCardCollectionViewLayout;
-			path = HFCardCollectionViewLayout;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -223,7 +223,7 @@
 			buildConfigurationList = 8D38F54AF88246A8B46974754137E855 /* Build configuration list for PBXNativeTarget "HFCardCollectionViewLayout" */;
 			buildPhases = (
 				F4CE26AB165B5148306A43FC134DFC0E /* Headers */,
-				A95C6D7F88C7F5F2BD1D8CDF096FE86E /* Sources */,
+				F0694ADA547D5756151783804AA0BC39 /* Sources */,
 				96C7A9C071F9BB87BC874B45290F2265 /* Frameworks */,
 				0ABA0E4A3076B85C48328D2998AFA137 /* Resources */,
 			);
@@ -289,17 +289,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A95C6D7F88C7F5F2BD1D8CDF096FE86E /* Sources */ = {
+		F0694ADA547D5756151783804AA0BC39 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				85FFB93669B117FC061560AEC94FBED5 /* HFCardCollectionView.swift in Sources */,
-				84A6A54E5B620422A89C2D6F7B1A2950 /* HFCardCollectionViewCell.swift in Sources */,
-				C3722E3473783644786DC043491D5524 /* HFCardCollectionViewLayout-dummy.m in Sources */,
-				45E5B6347A6A1FF1437D0CED4E71788C /* HFCardCollectionViewLayout.swift in Sources */,
-				B5505821486F60F4E7464836FE0F7BEB /* HFCardCollectionViewLayoutAttributes.swift in Sources */,
-				EC8E49EB5FE2B07E9A8693E7BBEF4D8F /* HFCardCollectionViewLayoutDelegate.swift in Sources */,
-				5343C4A73D03D590DF5E4470CD00164A /* HFCardCollectionViewLayoutModel.swift in Sources */,
+				E07A0BCECA1BB917C42FE014C48EF646 /* HFCardCollectionView.swift in Sources */,
+				CAF9B285445762C4CE29E9578DD7E545 /* HFCardCollectionViewCell.swift in Sources */,
+				42C23F3D1281D3BD57307BE8CAE00AF4 /* HFCardCollectionViewLayout-dummy.m in Sources */,
+				E6DDD22A27FF69B75F42771DBB564ECF /* HFCardCollectionViewLayout.swift in Sources */,
+				F4FCCEB40915FE512C8C751B0AD3809B /* HFCardCollectionViewLayoutAttributes.swift in Sources */,
+				7DEAFB573A87B98735F733186F8378FB /* HFCardCollectionViewLayoutDelegate.swift in Sources */,
+				559E2EBF282CE8769AC4506C5BADBFC3 /* HFCardCollectionViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -415,7 +415,7 @@
 		};
 		759ED13F316D526A293861FE6EC682C2 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A11BEF253EFCAA1387B004412F575951 /* HFCardCollectionViewLayout.xcconfig */;
+			baseConfigurationReference = 1D16818D99F34A6C2467293BC23B23F0 /* HFCardCollectionViewLayout.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -507,7 +507,7 @@
 		};
 		F213808349C8D4464F480E3E79615ECE /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A11BEF253EFCAA1387B004412F575951 /* HFCardCollectionViewLayout.xcconfig */;
+			baseConfigurationReference = 1D16818D99F34A6C2467293BC23B23F0 /* HFCardCollectionViewLayout.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
