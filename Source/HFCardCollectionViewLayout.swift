@@ -466,7 +466,7 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
     internal func installMoveCardsGestureRecognizer() {
         self.component.mvCdGestureRecognizer = UILongPressGestureRecognizer(target:
             self, action: #selector(self.movingCardGestureHandler))
-        self.component.mvCdGestureRecognizer?.minimumPressDuration = 0.49
+        self.component.mvCdGestureRecognizer?.minimumPressDuration = 20.49
         self.component.mvCdGestureRecognizer?.delegate = self
         self.collectionView?.addGestureRecognizer(self.component.mvCdGestureRecognizer!)
     }
